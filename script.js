@@ -1,4 +1,3 @@
-console.log("Photosite lightbox script loaded");
 document.addEventListener("DOMContentLoaded", () => {
   const triggers = document.querySelectorAll(".js-lightbox-trigger");
   const lightbox = document.getElementById("lightbox");
