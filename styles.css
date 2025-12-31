@@ -68,6 +68,60 @@ p {
   transform: translateY(-4px);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
 }
+/* Lightbox overlay */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.lightbox.is-open {
+  display: flex;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: 96vw;
+  max-height: 96vh;
+  margin: 0;
+}
+
+.lightbox-content img {
+  width: auto;       /* let the browser decide based on aspect ratio */
+  height: auto;
+  max-width: 96vw;   /* never wider than the viewport */
+  max-height: 96vh;  /* never taller than the viewport */
+  display: block;
+  border-radius: 6px;
+}
+
+.lightbox-caption {
+  margin-top: 0.5rem;
+  text-align: center;
+  color: #e2e4ea;
+  font-size: 0.95rem;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: -2.2rem;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1.8rem;
+  cursor: pointer;
+}
 
 /* Footer */
 footer {

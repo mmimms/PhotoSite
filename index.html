@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>PhotoSite</title>
   <link rel="stylesheet" href="styles.css" />
+  <script src="script.js" defer></script>
 </head>
 <body>
   <main>
@@ -26,7 +27,9 @@
       <div class="gallery-grid">
         <figure>
           <img
+            class="js-lightbox-trigger"
             src="assets/Portfolios/Colorado Springs Rodeo 2025/Grit & Rain.jpg"
+            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Grit & Rain.jpg"
             alt="Cowboy roping a calf in heavy rain"
           />
           <figcaption>Grit &amp; Rain</figcaption>
@@ -34,7 +37,9 @@
 
         <figure>
           <img
+            class="js-lightbox-trigger"
             src="assets/Portfolios/Colorado Springs Rodeo 2025/Locked On.jpg"
+            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Locked On.jpg"
             alt="Rodeo rider focused down the arena with lasso, horse mid-stride"
           />
           <figcaption>Locked On</figcaption>
@@ -42,7 +47,9 @@
 
         <figure>
           <img
+            class="js-lightbox-trigger"
             src="assets/Portfolios/Colorado Springs Rodeo 2025/Rain Run.jpg"
+            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Rain Run.jpg"
             alt="Horses and riders lassooing a cow through driving rain"
           />
           <figcaption>Rain Run</figcaption>
@@ -50,7 +57,9 @@
 
         <figure>
           <img
+            class="js-lightbox-trigger"
             src="assets/Portfolios/Colorado Springs Rodeo 2025/Rodeo in the Rockies.jpg"
+            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Rodeo in the Rockies.jpg"
             alt="Rodeo arena framed by Colorado mountains"
           />
           <figcaption>Rodeo in the Rockies</figcaption>
@@ -58,7 +67,9 @@
 
         <figure>
           <img
+            class="js-lightbox-trigger"
             src="assets/Portfolios/Colorado Springs Rodeo 2025/Weathering the Storm.jpg"
+            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Weathering the Storm.jpg"
             alt="Cowboy riding a bucking bronco in heavy rain"
           />
           <figcaption>Weathering the Storm</figcaption>
@@ -70,5 +81,13 @@
       © 2025 Mark Mimms · Portfolio in progress
     </footer>
   </main>
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <div class="lightbox-backdrop"></div>
+  <figure class="lightbox-content">
+    <button class="lightbox-close" aria-label="Close image">×</button>
+    <img src="" alt="" id="lightbox-image" />
+    <figcaption id="lightbox-caption"></figcaption>
+  </figure>
+</div>
 </body>
 </html>
