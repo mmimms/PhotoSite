@@ -9,8 +9,8 @@ const collections = [
   'colorado-rodeo-2025',
   'celebration-christmas-2025',
   'germany-austria-2023',
-  'japan-2025'
-];
+  'japan-2025',
+  'england-2024'];
 
 let allMetadata = []; // Store all metadata
 let allTags = new Set(); // All unique tags
