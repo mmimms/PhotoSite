@@ -249,13 +249,22 @@
           />
         </div>
 
+        <!-- reCAPTCHA v3 token (hidden) -->
+        <input
+          type="hidden"
+          id="recaptcha-token"
+          name="recaptcha_token"
+        />
+
         <button type="submit">Send Message</button>
       </form>
 
       <div class="contact-footer">
         <p>
           <strong>Privacy:</strong> Your message will be sent securely and never shared
-          with third parties.
+          with third parties. This site is protected by reCAPTCHA and the Google
+          <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a> and
+          <a href="https://policies.google.com/terms" target="_blank" rel="noopener">Terms of Service</a> apply.
         </p>
         <p>
           <strong>Response Time:</strong> Please allow up to 24–48 hours for a response,
@@ -268,6 +277,9 @@
   <footer>
     © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
   </footer>
+
+  <!-- Google reCAPTCHA v3 Script -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <script>
     // Handle contact form submission via AJAX
@@ -285,6 +297,10 @@
         submitButton.textContent = 'Sending...';
 
         try {
+          // Get reCAPTCHA v3 token
+          const token = await grecaptcha.execute('RECAPTCHA_SITE_KEY_PLACEHOLDER', { action: 'submit' });
+          document.getElementById('recaptcha-token').value = token;
+
           // Create FormData from the form
           const formData = new FormData(this);
 
