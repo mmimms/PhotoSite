@@ -1,0 +1,151 @@
+# ============================================
+# PhotoSite .gitignore
+# Photography Portfolio with Print Sales
+# ============================================
+
+# ----------------
+# Environment & Secrets
+# ----------------
+.env
+.env.local
+.env.production
+*.secret
+
+# PHP mail configuration (for contact.php)
+config.php
+mail-config.php
+
+# API credentials (future: The Print Space, Stripe, etc.)
+**/api-keys.json
+**/credentials.json
+
+# ----------------
+# Large Image Files Strategy
+# ----------------
+# APPROACH: Track small thumbnails in Git, exclude large full-resolution files
+# Full-res images should be served via Cloudflare or separate hosting
+
+# Exclude full-resolution images (2MB+)
+assets/**/full-res/*.jpg
+assets/**/full-res/*.jpeg
+assets/**/full-res/*.png
+assets/**/full-res/*.tif
+assets/**/full-res/*.tiff
+
+# Allow thumbnail images (stay in Git - small, optimized)
+!assets/**/thumbnails/*.jpg
+!assets/**/thumbnails/*.jpeg
+!assets/**/thumbnails/*.png
+
+# Keep metadata files (crucial for site functionality)
+!assets/**/metadata.json
+
+# Original/working files (never commit these)
+originals/
+raw-exports/
+*.psd
+*.ai
+*.raw
+*.dng
+*.cr2
+*.nef
+
+# ----------------
+# Development Tools
+# ----------------
+# Node.js (if you add build tools later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+package-lock.json
+.pnpm-debug.log*
+
+# VSCode (keep useful config, ignore personal settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# ----------------
+# Database (future)
+# ----------------
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+
+# ----------------
+# Build & Cache
+# ----------------
+.cache/
+dist/
+build/
+.wrangler/
+.dev.vars
+
+# Cloudflare Workers local development
+.mf/
+worker-data/
+
+# ----------------
+# Logs
+# ----------------
+logs/
+*.log
+debug.log
+error.log
+
+# ----------------
+# Operating System Files
+# ----------------
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+
+# ----------------
+# Temporary Files
+# ----------------
+*.tmp
+*.temp
+*.swp
+*.swo
+.#*
+
+# ----------------
+# E-commerce & Customer Data (future)
+# ----------------
+# Never commit customer information
+orders/
+customer-data/
+test-orders/
+*.csv
+
+# ----------------
+# Testing & Debug
+# ----------------
+coverage/
+.nyc_output/
+*.test.local
+
+# ============================================
+# IMPORTANT: These ARE tracked (exceptions)
+# ============================================
+# The ! prefix means "do track this"
+# - !assets/**/thumbnails/
+# - !assets/**/metadata.json
+# - !.vscode/launch.json
+# - !.env.example
