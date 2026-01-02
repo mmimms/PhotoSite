@@ -2,100 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>PhotoSite</title>
-  <link rel="stylesheet" href="styles.css" />
-  <script src="script.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mark Mimms Photography · Fine Art Prints</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/gallery-loader.js" defer></script>
+  <script src="assets/js/script.js" defer></script>
 </head>
 <body>
-      <header>
+  <header>
     <nav aria-label="Main navigation">
       <a href="index.html" aria-current="page">Portfolio</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
-      <a href="contact2.html">Contact2</a>
     </nav>
   </header>
+
   <main>
     <div class="header-bar">
-      <h1>PhotoSite</h1>
+      <h1>Mark Mimms Photography</h1>
       <span>Fine art photography prints</span>
     </div>
 
-    <p>
-      A growing collection of images prepared for high-quality prints.
-      This is the first draft of the gallery layout.
+    <p class="intro-text">
+      A curated collection of travel, landscape, and documentary photography
+      prepared for museum-quality prints. Each image is meticulously composed
+      and edited to showcase the story, light, and place that inspired it.
     </p>
 
-    <section class="gallery">
-      <h2>Colorado Springs Rodeo 2025</h2>
-      <p class="gallery-intro">
-        Action from a rain-soaked Colorado Springs Rodeo, prepared for large-format prints.
-      </p>
-
-      <div class="gallery-grid">
-        <figure>
-          <img
-            class="js-lightbox-trigger"
-            src="assets/Portfolios/Colorado Springs Rodeo 2025/Grit & Rain.jpg"
-            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Grit & Rain.jpg"
-            alt="Cowboy roping a calf in heavy rain"
-          />
-          <figcaption>Grit &amp; Rain</figcaption>
-        </figure>
-
-        <figure>
-          <img
-            class="js-lightbox-trigger"
-            src="assets/Portfolios/Colorado Springs Rodeo 2025/Locked On.jpg"
-            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Locked On.jpg"
-            alt="Rodeo rider focused down the arena with lasso, horse mid-stride"
-          />
-          <figcaption>Locked On</figcaption>
-        </figure>
-
-        <figure>
-          <img
-            class="js-lightbox-trigger"
-            src="assets/Portfolios/Colorado Springs Rodeo 2025/Rain Run.jpg"
-            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Rain Run.jpg"
-            alt="Horses and riders lassooing a cow through driving rain"
-          />
-          <figcaption>Rain Run</figcaption>
-        </figure>
-
-        <figure>
-          <img
-            class="js-lightbox-trigger"
-            src="assets/Portfolios/Colorado Springs Rodeo 2025/Rodeo in the Rockies.jpg"
-            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Rodeo in the Rockies.jpg"
-            alt="Rodeo arena framed by Colorado mountains"
-          />
-          <figcaption>Rodeo in the Rockies</figcaption>
-        </figure>
-
-        <figure>
-          <img
-            class="js-lightbox-trigger"
-            src="assets/Portfolios/Colorado Springs Rodeo 2025/Weathering the Storm.jpg"
-            data-full="assets/Portfolios/Colorado Springs Rodeo 2025/Weathering the Storm.jpg"
-            alt="Cowboy riding a bucking bronco in heavy rain"
-          />
-          <figcaption>Weathering the Storm</figcaption>
-        </figure>
-      </div>
-    </section>
+    <!-- Collections container - populated by gallery-loader.js -->
+    <div id="collections-container"></div>
 
     <footer>
-      © 2025 Mark Mimms · Portfolio in progress
+      © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
     </footer>
   </main>
-<div class="lightbox" id="lightbox" aria-hidden="true">
-  <div class="lightbox-backdrop"></div>
-  <figure class="lightbox-content">
-    <button class="lightbox-close" aria-label="Close image">×</button>
-    <img src="" alt="" id="lightbox-image" />
-    <figcaption id="lightbox-caption"></figcaption>
-  </figure>
-</div>
+
+  <!-- Lightbox modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop"></div>
+    <figure class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close image">×</button>
+      <img src="" alt="" id="lightbox-image" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
 </body>
 </html>
