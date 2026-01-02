@@ -93,13 +93,18 @@
       transition: all 0.2s ease;
     }
 
-    .contact-form button:hover {
+    .contact-form button:hover:not(:disabled) {
       background: #fb923c;
       transform: translateY(-2px);
     }
 
-    .contact-form button:active {
+    .contact-form button:active:not(:disabled) {
       transform: translateY(0);
+    }
+
+    .contact-form button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
     }
 
     .contact-footer {
@@ -109,6 +114,64 @@
       font-size: 0.85rem;
       color: #9da3af;
       line-height: 1.6;
+    }
+
+    /* Notification styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: 6px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      max-width: 400px;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .notification.success {
+      background: #10b981;
+      color: #ffffff;
+      border: 1px solid #059669;
+    }
+
+    .notification.error {
+      background: #ef4444;
+      color: #ffffff;
+      border: 1px solid #dc2626;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 600px) {
+      .notification {
+        right: 10px;
+        left: 10px;
+        max-width: none;
+      }
     }
   </style>
 </head>
@@ -130,7 +193,7 @@
         please use the form below. I aim to respond within 24–48 hours.
       </p>
 
-      <form class="contact-form" action="contact.php" method="post" novalidate>
+      <form class="contact-form" id="contact-form" novalidate>
         <div class="form-field">
           <label for="name">Your Name <span style="color: #f97316;">*</span></label>
           <input
@@ -205,5 +268,83 @@
   <footer>
     © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
   </footer>
+
+  <script>
+    // Handle contact form submission via AJAX
+    const contactForm = document.getElementById('contact-form');
+
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.textContent;
+
+        // Disable button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+
+        try {
+          // Create FormData from the form
+          const formData = new FormData(this);
+
+          // Send the form data
+          const response = await fetch('contact.php', {
+            method: 'POST',
+            body: formData
+          });
+
+          // Parse JSON response
+          const data = await response.json();
+
+          if (response.ok && data.success) {
+            // Success!
+            showNotification(data.message || 'Thank you! Your message has been sent.', 'success');
+            this.reset(); // Clear the form
+          } else {
+            // Error from server
+            showNotification(data.message || 'Sorry, there was a problem sending your message.', 'error');
+          }
+        } catch (error) {
+          // Network error or JSON parsing error
+          console.error('Form submission error:', error);
+          showNotification('Network error. Please check your connection and try again.', 'error');
+        } finally {
+          // Re-enable button and restore text
+          submitButton.disabled = false;
+          submitButton.textContent = originalText;
+        }
+      });
+    }
+
+    /**
+     * Display a notification message
+     * @param {string} message - The message to display
+     * @param {string} type - 'success' or 'error'
+     */
+    function showNotification(message, type = 'success') {
+      // Remove any existing notifications
+      const existingNotification = document.querySelector('.notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+
+      // Create notification element
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      notification.setAttribute('role', 'alert');
+      notification.setAttribute('aria-live', 'polite');
+
+      // Add to page
+      document.body.appendChild(notification);
+
+      // Auto-remove after 5 seconds
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => notification.remove(), 300);
+      }, 5000);
+    }
+  </script>
 </body>
 </html>
