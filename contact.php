@@ -47,6 +47,8 @@ if (!$recaptcha_secret || !$contact_email || !$from_email) {
 // Simple sanitization helper
 function clean_input($value) {
     return trim(strip_tags($value));
+    // Remove CRLF characters that could enable email injection
+    return str_replace(["\r", "\n"], '', $value);
 }
 
 // Set JSON response header
