@@ -188,7 +188,7 @@ function renderGalleries() {
       const figure = document.createElement('figure');
       
       const thumbPath = `assets/images/gallery/${image.collectionId}/thumbnails/${image.filename}`;
-      const fullPath = `assets/images/gallery/${image.collectionId}/full/${image.filename}`;
+      const fullPath = `assets/images/gallery/${image.collectionId}/full-res/${image.filename}`;
       
       figure.innerHTML = `
         <img
