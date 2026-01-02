@@ -1,6 +1,6 @@
 <?php
 // Where to send the messages
-$to      = "you@example.com";          // TODO: change to your real inbox
+$to      = "mark.o.mimms@gmail.com";          // TODO: change to your real inbox
 $subject = "New message from website contact form";
 
 // Simple sanitization helper
@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $body .= "Message:\n{$message}\n";
 
     // Headers
-    $fromEmail = "no-reply@yourdomain.com";   // use an address on your domain
+    $fromEmail = "no-reply@example.com";   // use an address on your domain
     $headers  = "From: {$name} <{$fromEmail}>\r\n";
     $headers .= "Reply-To: {$email}\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
