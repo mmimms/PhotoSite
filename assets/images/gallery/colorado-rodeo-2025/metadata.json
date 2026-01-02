@@ -41,7 +41,7 @@
         {"size": "16x20", "price": 135},
         {"size": "20x30", "price": 225}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -57,7 +57,7 @@
         {"size": "16x20", "price": 135},
         {"size": "20x30", "price": 225}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -89,7 +89,7 @@
         {"size": "16x20", "price": 135},
         {"size": "20x30", "price": 225}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     }
   ]

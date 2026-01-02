@@ -73,7 +73,7 @@
         {"size": "16x20", "price": 140},
         {"size": "20x30", "price": 235}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -89,7 +89,7 @@
         {"size": "16x20", "price": 140},
         {"size": "20x30", "price": 235}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -201,14 +201,14 @@
         {"size": "16x20", "price": 140},
         {"size": "20x30", "price": 235}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
       "id": "ueno-park-lanterns",
       "title": "Ueno Park Lanterns",
       "filename": "Ueno Park Lanterns - Screen.jpg",
-      "description": "Traditional lanterns illuminate the pathways of Tokyo's Ueno Park, creating an atmosphere of timeless Japanese beauty.",
+      "description": "Traditional lanterns illuminate the pathways of Tokyo's Ueno Park, highlighting the atmosphere of creating an atmosphere of timeless Japanese beauty.",
       "location": "Tokyo, Japan",
       "tags": ["travel", "japan", "park", "architecture", "evening", "lanterns"],
       "printSizes": [
@@ -224,16 +224,16 @@
       "id": "hitachi-tower-in-camera",
       "title": "Hitachi Tower - In Camera",
       "filename": "Hitachi Tower - In Camera - Screen.jpg",
-      "description": "A modern perspective on Japan's urban landscape, showcasing contemporary architecture and city life.",
-      "location": "Hitachi, Japan",
-      "tags": ["travel", "japan", "city", "architecture", "modern", "urban"],
+      "description": "A modern perspective on Japan's urban landscape, showcasing contemporary architecture and city life at night.",
+      "location": "Osaka, Japan",
+      "tags": ["travel", "japan", "city", "osaka", "architecture", "modern", "urban"],
       "printSizes": [
         {"size": "8x10", "price": 50},
         {"size": "11x14", "price": 85},
         {"size": "16x20", "price": 140},
         {"size": "20x30", "price": 235}
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     }
   ]
