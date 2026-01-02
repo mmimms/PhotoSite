@@ -19,6 +19,7 @@ A photography portfolio website with AI-assisted collection management, built fo
 - ⚡ **Fast loading** with lazy loading and optimized thumbnails
 - 🤖 **AI metadata generation** with Perplexity API (experimental) or Claude API
 - 🔍 **Accessible** with semantic HTML, ARIA labels, keyboard navigation
+- 📧 **Working contact form** with reCAPTCHA v3 spam protection
 
 ## Current Collections
 
@@ -55,7 +56,21 @@ A photography portfolio website with AI-assisted collection management, built fo
 ### AI/APIs
 - **Perplexity API** (primary, vision-capable) - Image analysis + metadata generation
 - **Claude API** (Anthropic) - Fallback for metadata generation
+- **Google reCAPTCHA v3** - Invisible spam protection on contact form
 - **SendGrid** (recommended) - Email delivery for contact forms
+
+## Contact Form (COMPLETE)
+
+✅ **Status**: Working - reCAPTCHA v3 integrated and tested
+
+### Features
+- Invisible bot protection (no user interaction needed)
+- Honeypot spam filter
+- Email validation
+- Real-time success/error notifications
+- Logs reCAPTCHA scores for monitoring
+
+**See [RECAPTCHA_SETUP.md](./RECAPTCHA_SETUP.md) for complete setup guide.**
 
 ## Quick Start
 
@@ -103,11 +118,11 @@ See [COLLECTION_SETUP.md](./COLLECTION_SETUP.md) for detailed guide.
 PhotoSite/
 ├── index.html                    # Homepage with featured galleries
 ├── about.html                    # About the photographer
-├── contact.html                  # Contact form
+├── contact.html                  # Contact form with reCAPTCHA v3
 ├── browse.html                   # Browse by tag
 ├── collection.html               # Individual collection page
 │
-├── contact.php                   # Email handler
+├── contact.php                   # Email handler with spam protection
 ├── scripts/
 │   ├── generate-collection.py    # AI metadata + thumbnails (Perplexity)
 │   └── generate-collection-claude.py  # Alternative (Claude API)
@@ -137,6 +152,7 @@ PhotoSite/
 ├── ReadMe.md                     # This file
 ├── ARCHITECTURE.md               # How everything works
 ├── COLLECTION_SETUP.md           # Adding collections guide
+├── RECAPTCHA_SETUP.md            # Contact form setup guide
 └── Roadmap.md                    # Future features
 ```
 
@@ -147,7 +163,7 @@ PhotoSite/
 - **index.html** - Homepage showing featured images from all collections
 - **browse.html** - Browse by tag with filtering (experimental feature)
 - **about.html** - About the photographer
-- **contact.html** - Contact form with anti-spam protection
+- **contact.html** - Contact form with reCAPTCHA v3 bot protection
 - **collection.html** - Full collection view (loaded from query parameter)
 
 ### JavaScript
@@ -177,8 +193,9 @@ PhotoSite/
 - **contact.php** - Handles form submissions
   - Email validation
   - Honeypot spam detection
+  - Google reCAPTCHA v3 verification
+  - Configurable score threshold (default: 0.5)
   - Optional SendGrid integration for reliable delivery
-  - **Note: Has security issues that need fixing (see issue tracker)**
 
 ## Image Requirements
 
@@ -269,47 +286,10 @@ python -m http.server 8000
 gh pages deploy --source=.
 ```
 
-## Development Workflow
-
-1. **Add photos to `full-res/` folder**
-2. **Run `generate-collection.py`**
-   - Generates thumbnails
-   - Analyzes images with AI
-   - Creates metadata.json
-   - Updates JS config
-3. **Review `metadata.json`**
-   - Check AI-generated descriptions
-   - Verify tags
-   - Adjust featured images if needed
-4. **Commit and push**
-   - Site updates automatically
-
-## Contact Form
-
-### Features
-- HTML5 form validation
-- Honeypot spam filter
-- Email header injection protection (basic)
-- Optional SendGrid integration
-
-### Setup
-
-**Option 1: PHP mail() (simple, less reliable)**
-```php
-// contact.php already configured
-$to = "mark.o.mimms@gmail.com";  // Update this
-```
-
-**Option 2: SendGrid (recommended, more reliable)**
-```bash
-# Set API key
-export SENDGRID_API_KEY='SG.....'
-
-# Update contact.php to use SendGrid
-# See COLLECTION_SETUP.md for details
-```
-
 ## Troubleshooting
+
+### Contact Form Issues
+See [RECAPTCHA_SETUP.md - Troubleshooting](./RECAPTCHA_SETUP.md#troubleshooting)
 
 ### "No collections loaded on homepage"
 - Check that metadata.json files exist in each collection folder
@@ -335,7 +315,6 @@ export CLAUDE_API_KEY='sk-ant-...'
 
 ## Known Issues
 
-- **contact.php** - Needs security hardening (email header injection, CSRF protection)
 - **browse.html** - Tag filtering experimental, may have bugs
 - **No HTTPS redirect** - Handled by Cloudflare
 - **No The Print Space integration** - In development
@@ -376,19 +355,21 @@ Photography © 2025 Mark Mimms. Code available under MIT License.
 
 - [ARCHITECTURE.md](./ARCHITECTURE.md) - Technical deep dive
 - [COLLECTION_SETUP.md](./COLLECTION_SETUP.md) - How to add collections
+- [RECAPTCHA_SETUP.md](./RECAPTCHA_SETUP.md) - Contact form setup guide
 - [Roadmap.md](./Roadmap.md) - Future plans
 - [Perplexity API Docs](https://docs.perplexity.ai)
 - [Claude API Docs](https://docs.anthropic.com)
+- [Google reCAPTCHA Docs](https://developers.google.com/recaptcha/docs/v3)
 - [Cloudflare Pages Docs](https://developers.cloudflare.com/pages/)
 
 ## Contact
 
-**Photography Inquiries**: Use the [Contact form](https://markphoto.example.com/contact.html)
+**Photography Inquiries**: Use the [Contact form](https://mimmsphoto.com/contact.html)
 
 **Code Issues**: [GitHub Issues](https://github.com/mmimms/PhotoSite/issues)
 
 ---
 
-**Updated**: January 2, 2025  
-**Version**: 1.2  
-**Status**: Active Development
+**Updated**: January 2, 2026  
+**Version**: 1.3  
+**Status**: Active Development - Contact Form Complete ✅
