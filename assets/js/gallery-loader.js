@@ -89,7 +89,7 @@ function createImageFigure(image, collectionId) {
   const figure = document.createElement('figure');
   
   const thumbnailPath = `assets/images/gallery/${collectionId}/thumbnails/${image.filename}`;
-  const fullImagePath = `assets/images/gallery/${collectionId}/full/${image.filename}`;
+  const fullImagePath = `assets/images/gallery/${collectionId}/full-res/${image.filename}`;
   
   figure.innerHTML = `
     <img
