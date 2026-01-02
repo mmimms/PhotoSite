@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Browse by Category · Mark Mimms Photography</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/browse-loader.js" defer></script>
+  <script src="assets/js/script.js" defer></script>
+  <style>
+    /* Browse-specific styles */
+    .browse-header {
+      margin-bottom: 2rem;
+    }
+
+    .tag-filter-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background: rgba(249, 115, 22, 0.05);
+      border-radius: 8px;
+      border: 1px solid rgba(249, 115, 22, 0.2);
+    }
+
+    .tag-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #f97316;
+      background: transparent;
+      color: #f97316;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: all 0.2s ease;
+    }
+
+    .tag-button:hover {
+      background: #f97316;
+      color: #050608;
+    }
+
+    .tag-button.active {
+      background: #f97316;
+      color: #050608;
+      font-weight: 600;
+    }
+
+    .tag-button.all {
+      border-color: #d0d0d0;
+      color: #d0d0d0;
+    }
+
+    .tag-button.all:hover {
+      background: #d0d0d0;
+      color: #050608;
+    }
+
+    .tag-button.all.active {
+      background: #d0d0d0;
+      color: #050608;
+      font-weight: 600;
+    }
+
+    .category-section {
+      margin-bottom: 3rem;
+    }
+
+    .category-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid #1c1f26;
+      color: #f97316;
+    }
+
+    .image-count {
+      display: inline-block;
+      font-size: 0.8rem;
+      color: #9da3af;
+      margin-left: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: #9da3af;
+    }
+
+    @media (max-width: 600px) {
+      .tag-filter-container {
+        padding: 0.75rem;
+        gap: 0.4rem;
+      }
+
+      .tag-button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Portfolio</a>
+      <a href="browse.html" aria-current="page">Browse</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="browse-header">
+      <h1>Browse by Category</h1>
+      <p class="intro-text">
+        Explore images by subject matter, technique, and theme.
+        Click tags below to filter the gallery.
+      </p>
+    </div>
+
+    <!-- Tag filter buttons (dynamic) -->
+    <div class="tag-filter-container" id="tag-filter">
+      <!-- Populated by browse-loader.js -->
+    </div>
+
+    <!-- Gallery sections grouped by selected tags (dynamic) -->
+    <div id="browse-galleries">
+      <!-- Populated by browse-loader.js -->
+    </div>
+
+    <footer>
+      © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
+    </footer>
+  </main>
+
+  <!-- Lightbox modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop"></div>
+    <figure class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close image">×</button>
+      <img src="" alt="" id="lightbox-image" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+</body>
+</html>
