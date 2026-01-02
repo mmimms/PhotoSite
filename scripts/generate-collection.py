@@ -38,6 +38,7 @@ import os
 import sys
 import json
 import argparse
+import hashlib
 from pathlib import Path
 from PIL import Image
 import re
@@ -59,6 +60,14 @@ def log(level, message):
     reset = '\033[0m'
     color = colors.get(level, '')
     print(f"{color}[{level}]{reset} {message}")
+
+def get_image_hash(image_path):
+    """Get SHA256 hash of image file for deduplication."""
+    sha256_hash = hashlib.sha256()
+    with open(image_path, 'rb') as f:
+        for byte_block in iter(lambda: f.read(4096), b''):
+            sha256_hash.update(byte_block)
+    return sha256_hash.hexdigest()
 
 def validate_collection_folder(collection_path):
     """Validate that collection folder has required structure."""
@@ -92,29 +101,67 @@ def check_if_existing_collection(collection_path):
     metadata_path = Path(collection_path) / 'metadata.json'
     return metadata_path.exists()
 
-def get_existing_image_filenames(collection_path):
-    """Get list of image filenames already in metadata.json."""
+def get_existing_image_hashes(collection_path):
+    """Get set of image hashes already in metadata.json.
+    
+    Uses file hashing to detect duplicates, even if filenames differ
+    (e.g., image - Screen.jpg vs image - Matte.jpg)
+    """
     metadata_path = Path(collection_path) / 'metadata.json'
     
     if not metadata_path.exists():
-        return set()
+        return {}
     
     try:
         with open(metadata_path, 'r') as f:
             metadata = json.load(f)
         
-        existing_filenames = {img['filename'] for img in metadata.get('images', [])}
-        return existing_filenames
+        # Build map of filename -> hash for images in metadata
+        # We'll compute hashes for actual files and compare
+        existing_hashes = {}
+        for img in metadata.get('images', []):
+            existing_hashes[img['filename']] = None  # Hash will be computed on demand
+        
+        return existing_hashes
     except Exception as e:
         log('WARNING', f"Could not read existing metadata.json: {str(e)}")
-        return set()
+        return {}
 
 def find_new_images(collection_path):
-    """Find new images not yet in metadata.json."""
-    all_images = get_image_files(collection_path)
-    existing_filenames = get_existing_image_filenames(collection_path)
+    """Find new images not yet in metadata.json by comparing file hashes.
     
-    new_images = [img for img in all_images if img.name not in existing_filenames]
+    This is more reliable than filename comparison because it handles:
+    - Different naming schemes (Screen vs Matte versions)
+    - Renamed files
+    - Different file formats of the same image
+    """
+    all_images = get_image_files(collection_path)
+    
+    # Build hash map of existing images in metadata
+    metadata_path = Path(collection_path) / 'metadata.json'
+    existing_hashes = set()
+    
+    if metadata_path.exists():
+        try:
+            with open(metadata_path, 'r') as f:
+                metadata = json.load(f)
+            
+            # Pre-compute hashes of referenced files
+            full_res_path = Path(collection_path) / 'full-res'
+            for img in metadata.get('images', []):
+                img_file = full_res_path / img['filename']
+                if img_file.exists():
+                    file_hash = get_image_hash(img_file)
+                    existing_hashes.add(file_hash)
+        except Exception as e:
+            log('WARNING', f"Could not compute existing image hashes: {str(e)}")
+    
+    # Find new images (not in existing_hashes)
+    new_images = []
+    for image_file in all_images:
+        file_hash = get_image_hash(image_file)
+        if file_hash not in existing_hashes:
+            new_images.append(image_file)
     
     return new_images, len(all_images)
 
@@ -183,8 +230,8 @@ def extract_metadata_from_filename(filename):
     # Remove extension
     name = filename.rsplit('.', 1)[0]
     
-    # Remove " - Screen" suffix if present
-    name = re.sub(r'\s*-\s*Screen\s*$', '', name)
+    # Remove " - Screen" or " - Matte" suffix if present
+    name = re.sub(r'\s*-\s*(Screen|Matte)\s*$', '', name)
     
     # Split on " - " if it exists
     parts = name.split(' - ', 1)
@@ -311,9 +358,8 @@ def generate_metadata(collection_path, collection_id, api_key, new_images_only=F
         log('INFO', "Found existing metadata.json - entering MERGE mode")
         log('INFO', "New images will be added to existing collection")
         
-        # Get only new images
+        # Get only new images (by hash)
         new_images, total_images = find_new_images(collection_path)
-        all_images = get_image_files(collection_path)
         
         if not new_images:
             log('WARNING', f"No new images found! All {total_images} images already in metadata.")
