@@ -1,0 +1,136 @@
+{
+  "collection": {
+    "id": "england-2024",
+    "title": "England 2024",
+    "slug": "england-2024",
+    "displayCategory": "Travel & Adventure",
+    "description": "Late summer England travels",
+    "location": "England, Stonehenge, London, Oxford, Biddulph",
+    "date": "2024",
+    "coverImage": "Stonehenge Field.jpg",
+    "featured": true,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "stonehenge-field",
+      "title": "Stonehenge Field",
+      "filename": "Stonehenge Field.jpg",
+      "description": "A photograph from the collection",
+      "location": "England, Stonehenge, London, Oxford, Biddulph",
+      "tags": [
+        "travel"
+      ],
+      "printSizes": [
+        {
+          "size": "8x10",
+          "price": 50
+        },
+        {
+          "size": "11x14",
+          "price": 85
+        },
+        {
+          "size": "16x20",
+          "price": 140
+        },
+        {
+          "size": "20x30",
+          "price": 235
+        }
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "tower-of-london-sunrise",
+      "title": "Tower Of London Sunrise",
+      "filename": "Tower Of London Sunrise - Screen.jpg",
+      "description": "A photograph from the collection",
+      "location": "England, Stonehenge, London, Oxford, Biddulph",
+      "tags": [
+        "travel"
+      ],
+      "printSizes": [
+        {
+          "size": "8x10",
+          "price": 50
+        },
+        {
+          "size": "11x14",
+          "price": 85
+        },
+        {
+          "size": "16x20",
+          "price": 140
+        },
+        {
+          "size": "20x30",
+          "price": 235
+        }
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "stonehenge-field",
+      "title": "Stonehenge Field",
+      "filename": "Stonehenge Field.jpg",
+      "description": "A photograph from the collection",
+      "location": "England, Stonehenge, London, Oxford, Biddulph",
+      "tags": [
+        "travel"
+      ],
+      "printSizes": [
+        {
+          "size": "8x10",
+          "price": 50
+        },
+        {
+          "size": "11x14",
+          "price": 85
+        },
+        {
+          "size": "16x20",
+          "price": 140
+        },
+        {
+          "size": "20x30",
+          "price": 235
+        }
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "tower-of-london-sunrise",
+      "title": "Tower Of London Sunrise",
+      "filename": "Tower Of London Sunrise - Screen.jpg",
+      "description": "A photograph from the collection",
+      "location": "England, Stonehenge, London, Oxford, Biddulph",
+      "tags": [
+        "travel"
+      ],
+      "printSizes": [
+        {
+          "size": "8x10",
+          "price": 50
+        },
+        {
+          "size": "11x14",
+          "price": 85
+        },
+        {
+          "size": "16x20",
+          "price": 140
+        },
+        {
+          "size": "20x30",
+          "price": 235
+        }
+      ],
+      "featured": true,
+      "printAvailable": true
+    }
+  ]
+}
