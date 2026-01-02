@@ -24,18 +24,18 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+h2 {
+  font-size: 1.8rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
 p {
   line-height: 1.6;
   color: #d0d0d0;
 }
-<header>
-  <nav aria-label="Main navigation">
-    <a href="index.html" aria-current="page">Portfolio</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="contact2.html">Contact2</a>
-  </nav>
-</header>
+
+/* Navigation */
 header {
   background: #050608;
   border-bottom: 1px solid #1c1f26;
@@ -56,12 +56,18 @@ nav[aria-label="Main navigation"] a {
   text-transform: uppercase;
   letter-spacing: 0.16em;
   font-size: 0.8rem;
+  transition: color 0.2s ease;
+}
+
+nav[aria-label="Main navigation"] a:hover {
+  color: #ffffff;
 }
 
 nav[aria-label="Main navigation"] a[aria-current="page"] {
   color: #ffffff;
 }
-/* Simple nav / tagline row */
+
+/* Homepage header */
 .header-bar {
   display: flex;
   flex-wrap: wrap;
@@ -78,11 +84,67 @@ nav[aria-label="Main navigation"] a[aria-current="page"] {
   color: #9da3af;
 }
 
+.intro-text {
+  max-width: 65ch;
+  margin-bottom: 3rem;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Gallery sections */
+#collections-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.gallery-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.collection-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  border-bottom: 2px solid #1c1f26;
+  padding-bottom: 1.5rem;
+}
+
+.collection-header h2 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.collection-meta {
+  font-size: 0.9rem;
+  color: #9da3af;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.collection-description {
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  color: #d0d0d0;
+  max-width: 65ch;
+  line-height: 1.6;
+}
+
 /* Image grid */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1rem;
+}
+
+.gallery figure {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .gallery img {
@@ -92,14 +154,52 @@ nav[aria-label="Main navigation"] a[aria-current="page"] {
   border-radius: 6px;
   display: block;
   background: #111;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  cursor: zoom-in;
 }
 
-/* Hover effect that will translate nicely later into a lightbox */
+/* Hover effect */
 .gallery img:hover {
   transform: translateY(-4px);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
+  filter: brightness(1.05);
 }
+
+.gallery figcaption {
+  font-size: 0.9rem;
+  color: #d0d0d0;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* View collection link */
+.view-collection-link {
+  text-align: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1c1f26;
+}
+
+.view-collection-link a {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: 1px solid #f97316;
+  color: #f97316;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.2s ease;
+}
+
+.view-collection-link a:hover {
+  background: #f97316;
+  color: #050608;
+}
+
 /* Lightbox overlay */
 .lightbox {
   position: fixed;
@@ -129,10 +229,10 @@ nav[aria-label="Main navigation"] a[aria-current="page"] {
 }
 
 .lightbox-content img {
-  width: auto;       /* let the browser decide based on aspect ratio */
+  width: auto;
   height: auto;
-  max-width: 96vw;   /* never wider than the viewport */
-  max-height: 96vh;  /* never taller than the viewport */
+  max-width: 96vw;
+  max-height: 96vh;
   display: block;
   border-radius: 6px;
 }
@@ -153,6 +253,11 @@ nav[aria-label="Main navigation"] a[aria-current="page"] {
   color: #ffffff;
   font-size: 1.8rem;
   cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.lightbox-close:hover {
+  opacity: 0.7;
 }
 
 /* Contact section */
@@ -218,11 +323,13 @@ nav[aria-label="Main navigation"] a[aria-current="page"] {
   text-transform: uppercase;
   letter-spacing: 0.14em;
   cursor: pointer;
+  transition: background 0.2s ease;
 }
 
 .contact-form button[type="submit"]:hover {
   background: #fb923c;
 }
+
 /* Footer */
 footer {
   margin-top: 3rem;
@@ -231,7 +338,88 @@ footer {
   text-align: center;
 }
 
+footer a {
+  color: #80838a;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+footer a:hover {
+  color: #f97316;
+}
+
+/* About section */
+.about {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+.about h1 {
+  font-size: 2rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.about-intro {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  max-width: 55ch;
+  line-height: 1.7;
+}
+
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 3rem;
+}
+
+.about-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.about-text p {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.about-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-aside h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  color: #f97316;
+}
+
+.about-aside ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.about-aside li {
+  font-size: 0.9rem;
+  color: #d0d0d0;
+  line-height: 1.6;
+}
+
 /* Mobile tweaks */
+@media (max-width: 900px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
   main {
     padding-inline: 1rem;
@@ -241,7 +429,23 @@ footer {
     font-size: 1.9rem;
   }
 
+  h2 {
+    font-size: 1.4rem;
+  }
+
+  .gallery {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
   .gallery img {
-    height: 220px;
+    height: 200px;
+  }
+
+  .collection-header {
+    border-bottom: 1px solid #1c1f26;
+  }
+
+  #collections-container {
+    gap: 2.5rem;
   }
 }
