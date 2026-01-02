@@ -19,12 +19,15 @@ Expected folder structure:
 
 This script will:
     1. Generate thumbnails from full-res images
-    2. Create metadata.json with AI-assisted descriptions and tags
+    2. Create metadata.json with AI-assisted descriptions and tags (using Perplexity)
     3. Update collections lists in JavaScript files
     4. Generate metadata with smart featured selection
 
 Requirements:
-    pip install Pillow anthropic
+    pip install Pillow requests
+    
+Environment Variables:
+    PERPLEXITY_API_KEY - Your Perplexity API key from Settings > API
 """
 
 import os
@@ -35,19 +38,11 @@ from pathlib import Path
 from PIL import Image
 import re
 import base64
-
-try:
-    from anthropic import Anthropic
-except ImportError:
-    print("\033[91m[ERROR]\033[0m anthropic module not found.")
-    print("Install it with: pip install anthropic")
-    sys.exit(1)
+import requests
 
 # Constants
 THUMBNAIL_WIDTH = 400
 THUMBNAIL_QUALITY = 85
-FULL_RES_MAX_WIDTH = 2000
-FULL_RES_QUALITY = 90
 
 def log(level, message):
     """Simple logging with color."""
@@ -146,8 +141,8 @@ def extract_metadata_from_filename(filename):
     
     return title, description
 
-def generate_image_description_and_tags(client, image_path, title, collection_info):
-    """Use Claude to generate intelligent descriptions and tags for an image."""
+def generate_image_description_and_tags(api_key, image_path, title, collection_info):
+    """Use Perplexity Sonar to generate intelligent descriptions and tags for an image."""
     try:
         # Read and encode image
         with open(image_path, 'rb') as f:
@@ -162,7 +157,7 @@ def generate_image_description_and_tags(client, image_path, title, collection_in
         else:
             media_type = 'image/jpeg'
         
-        # Create prompt for Claude
+        # Create prompt for Perplexity
         prompt = f"""You are a photography metadata expert. Analyze this photograph and provide metadata for a photography portfolio.
 
 Collection Context:
@@ -183,49 +178,58 @@ For tags, choose from this list where relevant: travel, landscape, nature, cherr
 
 Make sure tags are relevant to this specific image and the collection context."""
         
-        # Call Claude API with vision
-        message = client.messages.create(
-            model="claude-3-5-sonnet-20241022",
-            max_tokens=500,
-            messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": media_type,
-                                "data": image_data,
+        # Call Perplexity API with vision (Sonar model)
+        response = requests.post(
+            'https://api.perplexity.ai/chat/completions',
+            headers={
+                'Authorization': f'Bearer {api_key}',
+                'Content-Type': 'application/json'
+            },
+            json={
+                'model': 'sonar-pro',
+                'messages': [
+                    {
+                        'role': 'user',
+                        'content': [
+                            {
+                                'type': 'image_url',
+                                'image_url': {
+                                    'url': f'data:{media_type};base64,{image_data}'
+                                }
                             },
-                        },
-                        {
-                            "type": "text",
-                            "text": prompt
-                        }
-                    ],
-                }
-            ],
+                            {
+                                'type': 'text',
+                                'text': prompt
+                            }
+                        ]
+                    }
+                ],
+                'max_tokens': 500
+            }
         )
         
+        if response.status_code != 200:
+            log('WARNING', f"  Perplexity API error ({response.status_code}): {response.text}")
+            return None, None
+        
         # Parse response
-        response_text = message.content[0].text
+        response_data = response.json()
+        response_text = response_data['choices'][0]['message']['content']
         
         # Try to extract JSON from response
-        # Sometimes Claude wraps it in markdown code blocks
         json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
         if json_match:
             metadata = json.loads(json_match.group())
             return metadata['description'], metadata['tags']
         else:
-            log('WARNING', f"  Could not parse Claude response for {image_path.name}")
+            log('WARNING', f"  Could not parse Perplexity response for {image_path.name}")
             return None, None
     
     except Exception as e:
         log('WARNING', f"  Failed to generate metadata for {image_path.name}: {str(e)}")
         return None, None
 
-def generate_metadata(collection_path, collection_id):
+def generate_metadata(collection_path, collection_id, api_key):
     """Generate metadata.json for the collection."""
     collection_path = Path(collection_path)
     full_res_path = collection_path / 'full-res'
@@ -252,13 +256,10 @@ def generate_metadata(collection_path, collection_id):
         'description': collection_description
     }
     
-    # Initialize Claude client
-    client = Anthropic()
-    
     print("\n" + "="*60)
     print("GENERATING IMAGE METADATA")
     print("="*60)
-    print(f"Using Claude to analyze {len(image_files)} images...\n")
+    print(f"Using Perplexity AI to analyze {len(image_files)} images...\n")
     
     # Smart featured selection: mark first image and every 3rd image as featured
     images_data = []
@@ -267,19 +268,19 @@ def generate_metadata(collection_path, collection_id):
         
         log('INFO', f"Analyzing {image_file.name}...")
         
-        # Use Claude to generate description and tags
+        # Use Perplexity to generate description and tags
         description, tags = generate_image_description_and_tags(
-            client, 
+            api_key,
             image_file, 
             title, 
             collection_info
         )
         
-        # Fallback to filename description if Claude fails
+        # Fallback to filename description if Perplexity fails
         if not description:
             description = filename_desc or f"A photograph from the {collection_title} collection"
         
-        # Fallback to default tag if Claude fails
+        # Fallback to default tag if Perplexity fails
         if not tags:
             tags = ["travel"]
         
@@ -334,8 +335,8 @@ def generate_metadata(collection_path, collection_id):
     log('INFO', f"  Images: {len(images_data)}")
     log('INFO', f"  Featured images: {sum(1 for img in images_data if img['featured'])}")
     log('WARNING', "  ⚠ Remember to:")
-    log('WARNING', "    - Review descriptions (Claude made intelligent guesses)")
-    log('WARNING', "    - Review tags (Claude made intelligent guesses)")
+    log('WARNING', "    - Review descriptions (Perplexity made intelligent guesses)")
+    log('WARNING', "    - Review tags (Perplexity made intelligent guesses)")
     log('WARNING', "    - Update displayCategory if needed")
 
 def update_javascript_configs(collection_id):
@@ -400,9 +401,11 @@ def main():
     args = parser.parse_args()
     
     # Check for API key
-    if not os.environ.get('ANTHROPIC_API_KEY'):
-        log('ERROR', "ANTHROPIC_API_KEY environment variable not set")
-        log('INFO', "Set it with: export ANTHROPIC_API_KEY='sk-ant-...'")
+    api_key = os.environ.get('PERPLEXITY_API_KEY')
+    if not api_key:
+        log('ERROR', "PERPLEXITY_API_KEY environment variable not set")
+        log('INFO', "Get your API key from: https://www.perplexity.ai/settings/api")
+        log('INFO', "Then set it with: export PERPLEXITY_API_KEY='pplx-...'")
         sys.exit(1)
     
     # Validate
@@ -422,9 +425,9 @@ def main():
     generate_thumbnails(args.collection_path)
     
     # Step 2: Generate metadata
-    print("\n[STEP 2] Creating Metadata (with AI)")
+    print("\n[STEP 2] Creating Metadata (with Perplexity AI)")
     print("-" * 60)
-    generate_metadata(args.collection_path, collection_id)
+    generate_metadata(args.collection_path, collection_id, api_key)
     
     # Step 3: Update JS configs
     print("\n[STEP 3] Updating Configuration Files")
@@ -437,7 +440,7 @@ def main():
     print("="*60)
     print(f"\nYour new collection '{collection_id}' is ready!\n")
     print("Next steps:")
-    print("  1. Review metadata.json (Claude made intelligent guesses)")
+    print("  1. Review metadata.json (Perplexity made intelligent guesses)")
     print("  2. Customize tags and descriptions as needed")
     print("  3. Update displayCategory if needed")
     print("  4. git add assets/images/gallery/{}/".format(collection_id))
