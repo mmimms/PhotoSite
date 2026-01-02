@@ -113,7 +113,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -148,7 +148,7 @@
           "price": 235
         }
       ],
-      "featured": true,
+      "featured": false,
       "printAvailable": true
     },
     {
@@ -182,7 +182,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -319,7 +319,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -354,7 +354,7 @@
           "price": 235
         }
       ],
-      "featured": true,
+      "featured": false,
       "printAvailable": true
     },
     {
@@ -389,7 +389,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -537,7 +537,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -577,7 +577,7 @@
           "price": 235
         }
       ],
-      "featured": true,
+      "featured": false,
       "printAvailable": true
     },
     {
@@ -620,7 +620,7 @@
           "price": 235
         }
       ],
-      "featured": false,
+      "featured": true,
       "printAvailable": true
     },
     {
@@ -687,216 +687,6 @@
         "magical",
         "travel",
         "seasonal",
-        "evening"
-      ],
-      "printSizes": [
-        {
-          "size": "8x10",
-          "price": 50
-        },
-        {
-          "size": "11x14",
-          "price": 85
-        },
-        {
-          "size": "16x20",
-          "price": 140
-        },
-        {
-          "size": "20x30",
-          "price": 235
-        }
-      ],
-      "featured": true,
-      "printAvailable": true
-    },
-    {
-      "id": "fuji-with-lantern",
-      "title": "Fuji With Lantern",
-      "filename": "Fuji With Lantern - Matte.jpg",
-      "description": "Majestic Mount Fuji rises snow-capped against a clear blue sky, framed by blooming cherry blossoms and a vibrant red lantern that infuses the scene with traditional Japanese charm and serenity. This enchanting composition captures the magical harmony of nature's grandeur and cultural elegance, evoking a profound sense of peace and timeless beauty.",
-      "location": "Japan",
-      "tags": [
-        "travel",
-        "landscape",
-        "nature",
-        "cherry-blossom",
-        "japan",
-        "lanterns",
-        "mountains",
-        "spring",
-        "peaceful",
-        "magical",
-        "culture",
-        "historical",
-        "seasonal"
-      ],
-      "printSizes": [
-        {
-          "size": "8x10",
-          "price": 50
-        },
-        {
-          "size": "11x14",
-          "price": 85
-        },
-        {
-          "size": "16x20",
-          "price": 140
-        },
-        {
-          "size": "20x30",
-          "price": 235
-        }
-      ],
-      "featured": false,
-      "printAvailable": true
-    },
-    {
-      "id": "kanazawa-rainy-geisha",
-      "title": "Kanazawa Rainy Geisha",
-      "filename": "Kanazawa Rainy Geisha - Matte.jpg",
-      "description": "In Kanazawa's historic Higashi Chaya District, a graceful geisha glides through rain-slicked stone streets lined with traditional wooden teahouses, her vibrant kimono a vivid contrast to the moody, wet atmosphere. This evocative capture blends cultural elegance with the serene melancholy of a rainy day, offering a timeless glimpse into Japan's geisha heritage.",
-      "location": "Japan",
-      "tags": [
-        "japan",
-        "portrait",
-        "street",
-        "people",
-        "culture",
-        "historical",
-        "weather",
-        "city"
-      ],
-      "printSizes": [
-        {
-          "size": "8x10",
-          "price": 50
-        },
-        {
-          "size": "11x14",
-          "price": 85
-        },
-        {
-          "size": "16x20",
-          "price": 140
-        },
-        {
-          "size": "20x30",
-          "price": 235
-        }
-      ],
-      "featured": false,
-      "printAvailable": true
-    },
-    {
-      "id": "kenroku-en-bridge",
-      "title": "Kenroku-en Bridge",
-      "filename": "Kenroku-en Bridge - Matte.jpg",
-      "description": "This enchanting photograph captures the iconic Hanami Bridge in Kenrokuen Garden, framed by cascading cherry blossoms in full spring bloom, their delicate pink petals arching gracefully over the wooden structure and reflecting in the serene garden pond below. The tranquil mood evokes timeless Japanese harmony, blending natural beauty with architectural elegance, perfect for a stunning portfolio print.",
-      "location": "Japan",
-      "tags": [
-        "japan",
-        "garden",
-        "cherry-blossom",
-        "spring",
-        "travel",
-        "landscape",
-        "nature",
-        "architecture",
-        "historical",
-        "peaceful",
-        "water",
-        "tree",
-        "park",
-        "culture"
-      ],
-      "printSizes": [
-        {
-          "size": "8x10",
-          "price": 50
-        },
-        {
-          "size": "11x14",
-          "price": 85
-        },
-        {
-          "size": "16x20",
-          "price": 140
-        },
-        {
-          "size": "20x30",
-          "price": 235
-        }
-      ],
-      "featured": true,
-      "printAvailable": true
-    },
-    {
-      "id": "kenroku-en-pond",
-      "title": "Kenroku-en Pond",
-      "filename": "Kenroku-en Pond - Matte.jpg",
-      "description": "Capture the timeless serenity of Kenroku-en Garden's pond, where cherry blossoms frame a traditional teahouse reflected in mirror-like waters, evoking profound peace and the delicate beauty of Japanese spring. This evocative image blends lush greenery, soft pink blooms, and architectural harmony, inviting viewers to immerse in nature's tranquil embrace.",
-      "location": "Japan",
-      "tags": [
-        "travel",
-        "landscape",
-        "nature",
-        "cherry-blossom",
-        "japan",
-        "garden",
-        "peaceful",
-        "architecture",
-        "culture",
-        "historical",
-        "tree",
-        "water",
-        "spring"
-      ],
-      "printSizes": [
-        {
-          "size": "8x10",
-          "price": 50
-        },
-        {
-          "size": "11x14",
-          "price": 85
-        },
-        {
-          "size": "16x20",
-          "price": 140
-        },
-        {
-          "size": "20x30",
-          "price": 235
-        }
-      ],
-      "featured": false,
-      "printAvailable": true
-    },
-    {
-      "id": "kyoto-night-sakura",
-      "title": "Kyoto Night Sakura",
-      "filename": "Kyoto Night Sakura - Matte.jpg",
-      "description": "Kyoto Night Sakura captures the enchanting glow of illuminated cherry blossoms framing a historic temple entrance at night, where soft pink petals contrast with warm golden lights along a serene pathway. This magical scene evokes timeless Japanese serenity, blending delicate spring beauty with architectural elegance for an irresistible print.",
-      "location": "Japan",
-      "tags": [
-        "travel",
-        "landscape",
-        "cherry-blossom",
-        "japan",
-        "temple",
-        "night",
-        "magical",
-        "peaceful",
-        "architecture",
-        "garden",
-        "lanterns",
-        "spring",
-        "historical",
-        "culture",
-        "seasonal",
-        "city",
         "evening"
       ],
       "printSizes": [
