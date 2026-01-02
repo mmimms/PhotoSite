@@ -74,6 +74,10 @@ Long-term:
 
    Store order data (SQLite initially, PostgreSQL as needed)
 
+    Email digest of popular/new images
+
+    SEO optimizations (sitemaps, structured data)
+
 
 
 Navigation Architecture
