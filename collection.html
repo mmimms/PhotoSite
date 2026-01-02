@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery · Mark Mimms Photography</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <script src="assets/js/collection-loader.js" defer></script>
+  <script src="assets/js/script.js" defer></script>
+</head>
+<body>
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="index.html">Portfolio</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main id="collection-main">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+      <a href="index.html">&larr; Back to Portfolio</a>
+    </div>
+
+    <!-- Collection Header (Dynamic) -->
+    <div id="collection-header" class="header-bar">
+      <!-- Content populated by JS -->
+      <h1 class="loading-skeleton">Loading Collection...</h1>
+    </div>
+
+    <div id="collection-intro" class="intro-text">
+      <!-- Description populated by JS -->
+    </div>
+
+    <!-- Gallery Grid (Dynamic) -->
+    <div id="collection-grid" class="gallery">
+      <!-- Images populated by JS -->
+    </div>
+
+    <footer>
+      © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
+    </footer>
+  </main>
+
+  <!-- Lightbox modal -->
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop"></div>
+    <figure class="lightbox-content">
+      <button class="lightbox-close" aria-label="Close image">×</button>
+      <img src="" alt="" id="lightbox-image" />
+      <figcaption id="lightbox-caption"></figcaption>
+    </figure>
+  </div>
+</body>
+</html>
