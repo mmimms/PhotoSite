@@ -1,297 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+<head>
   <meta charset="UTF-8" />
-  <title>About · PhotoSite</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Mark Mimms · Fine Art Photography</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <style>
+    /* Contact form specific styling */
+    .contact-card {
+      max-width: 600px;
+      margin: 3rem auto 0;
+      padding: 2rem;
+      border: 1px solid #1c1f26;
+      border-radius: 8px;
+      background: linear-gradient(135deg, rgba(5, 6, 8, 0.8), rgba(5, 6, 8, 0.9));
+    }
+
+    .contact-card h2 {
+      font-size: 1.5rem;
+      margin: 0 0 0.5rem 0;
+      color: #f97316;
+    }
+
+    .contact-card p {
+      font-size: 0.95rem;
+      margin: 0.5rem 0 1.5rem 0;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-field label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #d0d0d0;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      padding: 0.75rem 0.85rem;
+      border-radius: 4px;
+      border: 1px solid #343843;
+      background: #050608;
+      color: #f4f4f4;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .form-field.honeypot {
+      position: absolute;
+      left: -10000px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+
+    .contact-form button {
+      padding: 0.85rem 1.75rem;
+      border-radius: 999px;
+      border: none;
+      background: #f97316;
+      color: #050608;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .contact-form button:hover {
+      background: #fb923c;
+      transform: translateY(-2px);
+    }
+
+    .contact-form button:active {
+      transform: translateY(0);
+    }
+
+    .contact-footer {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #1c1f26;
+      font-size: 0.85rem;
+      color: #9da3af;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
   <header>
     <nav aria-label="Main navigation">
       <a href="index.html">Portfolio</a>
       <a href="about.html">About</a>
-      <a href="contact.html"aria-current="page">Contact</a>
-      <a href="contact2.html">Contact2</a>
+      <a href="contact.html" aria-current="page">Contact</a>
     </nav>
   </header>
 
-  <head>
-    <meta charset="UTF-8" />
-    <title>Contact</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-        line-height: 1.5;
-        margin: 0;
-        padding: 0;
-        background: #050816;
-        color: #e5e7eb;
-      }
+  <main>
+    <section class="contact-card">
+      <h2>Get in Touch</h2>
+      <p>
+        For print inquiries, licensing, commissions, or any questions about my work,
+        please use the form below. I aim to respond within 24–48 hours.
+      </p>
 
-      .page {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 24px;
-      }
-
-      .contact-card {
-        width: 100%;
-        max-width: 480px;
-        background: linear-gradient(135deg, #0b1120, #020617);
-        border-radius: 16px;
-        padding: 24px 20px 20px;
-        box-shadow:
-          0 18px 40px rgba(15, 23, 42, 0.9),
-          0 0 0 1px rgba(148, 163, 184, 0.08);
-        position: relative;
-        overflow: hidden;
-      }
-
-      .contact-card::before {
-        content: "";
-        position: absolute;
-        inset: -40%;
-        background:
-          radial-gradient(circle at top left, rgba(56, 189, 248, 0.09), transparent 55%),
-          radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.09), transparent 55%);
-        opacity: 0.9;
-        pointer-events: none;
-      }
-
-      .contact-card__inner {
-        position: relative;
-        z-index: 1;
-      }
-
-      .contact-card__eyebrow {
-        font-size: 12px;
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: #38bdf8;
-        margin-bottom: 4px;
-      }
-
-      .contact-card__title {
-        font-size: 24px;
-        font-weight: 600;
-        letter-spacing: -0.03em;
-        margin: 0 0 4px;
-        color: #f9fafb;
-      }
-
-      .contact-card__subtitle {
-        font-size: 14px;
-        color: #9ca3af;
-        margin: 0 0 18px;
-      }
-
-      .contact-card__subtitle strong {
-        font-weight: 600;
-        color: #e5e7eb;
-      }
-
-      .contact-form {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-      }
-
-      .form-field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-      }
-
-      .form-field label {
-        font-size: 13px;
-        color: #d1d5db;
-      }
-
-      .form-field label span {
-        color: #f97316;
-      }
-
-      .form-input,
-      .form-textarea {
-        width: 100%;
-        border-radius: 9px;
-        border: 1px solid rgba(148, 163, 184, 0.35);
-        background: rgba(15, 23, 42, 0.85);
-        padding: 9px 11px;
-        font-size: 14px;
-        color: #e5e7eb;
-        outline: none;
-        transition:
-          border-color 0.15s ease,
-          box-shadow 0.15s ease,
-          background-color 0.15s ease;
-      }
-
-      .form-input::placeholder,
-      .form-textarea::placeholder {
-        color: #6b7280;
-      }
-
-      .form-input:focus,
-      .form-textarea:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
-        background: rgba(15, 23, 42, 0.95);
-      }
-
-      .form-textarea {
-        resize: vertical;
-        min-height: 100px;
-        max-height: 260px;
-      }
-
-      .contact-card__footer {
-        margin-top: 14px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        font-size: 12px;
-        color: #9ca3af;
-      }
-
-      .contact-card__footer a {
-        color: #38bdf8;
-        text-decoration: none;
-      }
-
-      .contact-card__footer a:hover {
-        text-decoration: underline;
-      }
-
-      .contact-card__disclaimer {
-        font-size: 11px;
-        color: #6b7280;
-      }
-
-      .submit-button {
-        margin-top: 4px;
-        width: 100%;
-        border-radius: 999px;
-        border: none;
-        padding: 10px 16px;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.03em;
-        text-transform: uppercase;
-        background: linear-gradient(135deg, #38bdf8, #6366f1);
-        color: white;
-        cursor: pointer;
-        box-shadow:
-          0 10px 25px rgba(37, 99, 235, 0.5),
-          0 0 0 1px rgba(191, 219, 254, 0.3);
-        transition:
-          transform 0.08s ease,
-          box-shadow 0.08s ease,
-          filter 0.08s ease;
-      }
-
-      .submit-button:hover {
-        transform: translateY(-1px);
-        filter: brightness(1.04);
-        box-shadow:
-          0 14px 30px rgba(37, 99, 235, 0.65),
-          0 0 0 1px rgba(191, 219, 254, 0.5);
-      }
-
-      .submit-button:active {
-        transform: translateY(0);
-        box-shadow:
-          0 4px 12px rgba(15, 23, 42, 0.85),
-          0 0 0 1px rgba(148, 163, 184, 0.7);
-      }
-
-      @media (min-width: 640px) {
-        .contact-card {
-          padding: 26px 22px 22px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <main class="page">
-      <section class="contact-card" aria-labelledby="contact-title">
-        <div class="contact-card__inner">
-          <p class="contact-card__eyebrow">Contact</p>
-          <h1 id="contact-title" class="contact-card__title">Get in touch</h1>
-          <p class="contact-card__subtitle">
-            For print inquiries, licensing, or commissions, use the form below and
-            I’ll get back to you as soon as possible.
-          </p>
-
-          <form
-            class="contact-form"
-            action="contact.php"
-            method="post"
-            novalidate
-          >
-            <div class="form-field">
-              <label for="name">Name <span>*</span></label>
-              <input
-                id="name"
-                name="name"
-                type="text"
-                class="form-input"
-                required
-              />
-            </div>
-
-            <div class="form-field">
-              <label for="email">Your Email Address <span>*</span></label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                class="form-input"
-                required
-              />
-            </div>
-
-            <div class="form-field">
-              <label for="message">Message <span>*</span></label>
-              <textarea
-                id="message"
-                name="message"
-                class="form-textarea"
-                required
-              ></textarea>
-            </div>
-
-            <!-- Honeypot field: hidden from users, visible to many bots -->
-            <div style="position:absolute; left:-10000px; top:auto; width:1px; height:1px; overflow:hidden;">
-              <label for="website">Website</label>
-              <input
-                type="text"
-                id="website"
-                name="website"
-                tabindex="-1"
-                autocomplete="off"
-              />
-            </div>
-
-            <button type="submit" class="submit-button">Send message</button>
-          </form>
-
-          <footer class="contact-card__footer">
-            <p>
-              Your message will be sent securely and never shared with third
-              parties.
-            </p>
-            <p class="contact-card__disclaimer">
-              Please allow up to 24–48 hours for a response, especially during
-              travel or active shooting days.
-            </p>
-          </footer>
+      <form class="contact-form" action="contact.php" method="post" novalidate>
+        <div class="form-field">
+          <label for="name">Your Name <span style="color: #f97316;">*</span></label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            aria-required="true"
+          />
         </div>
-      </section>
-    </main>
-  </body>
+
+        <div class="form-field">
+          <label for="email">Email Address <span style="color: #f97316;">*</span></label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="subject">Subject <span style="color: #f97316;">*</span></label>
+          <input
+            id="subject"
+            name="subject"
+            type="text"
+            required
+            aria-required="true"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="message">Message <span style="color: #f97316;">*</span></label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            aria-required="true"
+          ></textarea>
+        </div>
+
+        <!-- Honeypot: hidden from users -->
+        <div class="form-field honeypot">
+          <label for="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <button type="submit">Send Message</button>
+      </form>
+
+      <div class="contact-footer">
+        <p>
+          <strong>Privacy:</strong> Your message will be sent securely and never shared
+          with third parties.
+        </p>
+        <p>
+          <strong>Response Time:</strong> Please allow up to 24–48 hours for a response,
+          especially during travel or active shooting.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
+  </footer>
+</body>
 </html>
