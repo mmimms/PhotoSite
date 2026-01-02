@@ -59,7 +59,7 @@ function renderCollection(data) {
     
     // Paths
     const thumbPath = `assets/images/gallery/${collection.id}/thumbnails/${image.filename}`;
-    const fullPath = `assets/images/gallery/${collection.id}/full/${image.filename}`;
+    const fullPath = `assets/images/gallery/${collection.id}/full-res/${image.filename}`;
     
     // Print info (placeholder for e-commerce)
     const printInfo = image.printAvailable 
