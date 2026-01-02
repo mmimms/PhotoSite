@@ -24,11 +24,13 @@ This guide walks you through integrating Google reCAPTCHA v3 into your contact f
 - **Label**: `Mark's Photography Contact Form` (or similar)
 - **reCAPTCHA type**: Select **reCAPTCHA v3**
 - **Domains**: 
-  - Add your production domain: `mimmsphoto.com` (or your actual domain)
+  - Add your production domain: `mimmsphoto.com`
+  - Add `www.mimmsphoto.com` (with www)
   - Add `localhost` for local testing
 
 4. Accept the reCAPTCHA Terms of Service
 5. Click **Submit**
+6. **IMPORTANT**: Verify the checkbox **"Verify the origin of reCAPTCHA solutions"** is enabled
 
 ### Copy Your Keys
 
@@ -50,8 +52,8 @@ cp .env.example .env
 
 ```bash
 # .env
-RECAPTCHA_SITE_KEY=6Lc...your_site_key_here...s
-RECAPTCHA_SECRET_KEY=6Lc...your_secret_key_here...
+RECAPTCHA_SITE_KEY=6LfPYD4sAAAAAPRMlxjWVUfcCqf71v00nsoikDH_
+RECAPTCHA_SECRET_KEY=6LfPYD4sAAAAAKtx...your_secret_key_here...
 RECAPTCHA_THRESHOLD=0.5
 CONTACT_EMAIL=mark.o.mimms@gmail.com
 CONTACT_FROM_EMAIL=no-reply@mimmsphoto.com
@@ -66,16 +68,35 @@ For most sites, `0.5` is a good starting point. Adjust based on your spam statis
 
 ### 3. Update `contact.html` with your Site Key
 
+**CRITICAL FIX**: The reCAPTCHA v3 script loader must use the `render` parameter with your site key.
+
 Find this line in `contact.html`:
 
-```javascript
-const token = await grecaptcha.execute('RECAPTCHA_SITE_KEY_PLACEHOLDER', { action: 'submit' });
+```html
+<script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer></script>
 ```
 
-Replace `RECAPTCHA_SITE_KEY_PLACEHOLDER` with your actual **Site Key**:
+**Replace it with** (using your actual Site Key):
+
+```html
+<script src="https://www.google.com/recaptcha/api.js?render=6LfPYD4sAAAAAPRMlxjWVUfcCqf71v00nsoikDH_" async defer></script>
+```
+
+**Why this matters:**
+- `?render=explicit` is for reCAPTCHA v2 checkbox mode (WRONG)
+- `?render=YOUR_SITE_KEY` is for reCAPTCHA v3 silent mode (CORRECT)
+- Without this fix, you'll get "Invalid site key" errors
+
+Also ensure your JavaScript constant matches:
 
 ```javascript
-const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action: 'submit' });
+const RECAPTCHA_SITE_KEY = '6LfPYD4sAAAAAPRMlxjWVUfcCqf71v00nsoikDH_';
+```
+
+Then the form submission flow:
+
+```javascript
+const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
 ```
 
 ## Step 3: Verify It Works
@@ -92,7 +113,13 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 
 3. Fill out the form and submit
 
-4. Check your terminal for any errors
+4. Check browser console (F12) for:
+   - ✅ `"reCAPTCHA script loaded successfully"`
+   - ✅ `"grecaptcha object available and ready"`
+   - ✅ `"Requesting reCAPTCHA token from Google..."`
+   - ✅ `"reCAPTCHA token received: 0CAFc..."`
+   - ✅ `"Sending form data to contact.php"`
+   - ✅ `{ success: true, message: "Thank you! Your message has been sent successfully." }`
 
 5. Check your email inbox for the test message
 
@@ -100,20 +127,31 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 
 - ✅ Form submits without clicking a CAPTCHA checkbox
 - ✅ You receive the contact email
-- ✅ Success notification appears
-- ✅ No console errors (F12 > Console)
+- ✅ Green success notification appears
+- ✅ No red error banner
+- ✅ Console shows token received and form sent
 
 ### Troubleshooting
 
+**Red error banner: "Error: Invalid site key or not loaded in api.js"**
+- Check script tag uses `?render=YOUR_SITE_KEY` (not `?render=explicit`)
+- Verify Site Key is correct in both:
+  - `contact.html` script src
+  - JavaScript `RECAPTCHA_SITE_KEY` constant
+- Ensure both `www.mimmsphoto.com` and `mimmsphoto.com` are in Google reCAPTCHA domains
+- Hard refresh browser (Ctrl+Shift+R)
+- Wait 5-10 minutes for Google's DNS propagation
+
 **"reCAPTCHA token missing" error:**
-- Verify the Site Key is correct in `contact.html`
+- Verify the Site Key is correct in both places
 - Check browser console for network errors
-- Ensure `grecaptcha` script loaded: `curl https://www.google.com/recaptcha/api.js`
+- Ensure `grecaptcha` object is available
 
 **"reCAPTCHA verification failed" error:**
 - Verify Secret Key is correct in `.env`
 - Ensure `.env` file exists in same directory as `contact.php`
 - Check that `curl` or `allow_url_fopen` is enabled on your server
+- Check server error logs for Google API responses
 
 **Email not received:**
 - Check `CONTACT_EMAIL` in `.env`
@@ -127,6 +165,7 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 1. **Do NOT commit `.env`** (it's in `.gitignore`)
 2. **Create `.env` on production server manually**
 3. **Update production domain in Google reCAPTCHA Admin Console**
+4. **Ensure script tag in `contact.html` has correct Site Key in render parameter**
 
 ### Deployment Steps
 
@@ -166,9 +205,16 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
        │
        ▼
 ┌──────────────────┐
-│ Browser requests │
-│ reCAPTCHA token  │
-│ from Google      │
+│ Browser loads    │
+│ reCAPTCHA script │
+│ with site key    │
+└──────┬───────────┘
+       │
+       ▼
+┌──────────────────┐
+│ grecaptcha.      │
+│ execute() called │
+│ with action      │
 └──────┬───────────┘
        │
        ▼
@@ -210,8 +256,8 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 
 | Variable | Description | Example |
 |----------|-------------|----------|
-| `RECAPTCHA_SITE_KEY` | Public key for client-side | `6Lc7...` |
-| `RECAPTCHA_SECRET_KEY` | Private key for server verification | `6Lc7...` |
+| `RECAPTCHA_SITE_KEY` | Public key for client-side | `6LfPYD4sAAAAAPRM...` |
+| `RECAPTCHA_SECRET_KEY` | Private key for server verification | `6LfPYD4sAAAAAKtx...` |
 | `RECAPTCHA_THRESHOLD` | Score threshold (0.0-1.0) | `0.5` |
 | `CONTACT_EMAIL` | Where to send contact messages | `mark@example.com` |
 | `CONTACT_FROM_EMAIL` | From address for emails | `no-reply@example.com` |
@@ -219,8 +265,8 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 ### Code Files Updated
 
 1. **`contact.html`**
-   - Loads Google reCAPTCHA script
-   - Requests token on form submission
+   - Loads Google reCAPTCHA v3 script with site key in render parameter
+   - Requests token on form submission via `grecaptcha.execute()`
    - Sends token to PHP backend
 
 2. **`contact.php`**
@@ -278,6 +324,7 @@ const token = await grecaptcha.execute('6Lc...your_site_key_here...s', { action:
 - [Google reCAPTCHA Documentation](https://developers.google.com/recaptcha/docs/v3)
 - [reCAPTCHA Admin Console](https://www.google.com/recaptcha/admin)
 - [reCAPTCHA Verification API](https://developers.google.com/recaptcha/docs/verify)
+- [reCAPTCHA Implementation Guide](https://developers.google.com/recaptcha/docs/implicit_consent)
 
 ## Support
 
@@ -286,5 +333,6 @@ For issues:
 1. Check the **Troubleshooting** section above
 2. Review browser console (F12 > Console tab)
 3. Check `.env` file permissions and values
-4. Verify domain is registered in Google reCAPTCHA Admin Console
-5. Check server error logs: `tail -f /var/log/php-errors.log`
+4. Verify BOTH domains (with and without www) are registered in Google reCAPTCHA Admin Console
+5. Verify script src uses `?render=YOUR_SITE_KEY` (not `?render=explicit`)
+6. Check server error logs: `tail -f /var/log/php-errors.log`
