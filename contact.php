@@ -28,6 +28,11 @@ $recaptcha_threshold = (float) getenv('RECAPTCHA_THRESHOLD') ?: 0.5;
 $contact_email = getenv('CONTACT_EMAIL');
 $from_email = getenv('CONTACT_FROM_EMAIL');
 
+// DEBUG: Log what we loaded
+error_log('DEBUG: recaptcha_secret=' . ($recaptcha_secret ? 'SET' : 'NOT SET'));
+error_log('DEBUG: contact_email=' . $contact_email);
+error_log('DEBUG: from_email=' . $from_email);
+
 // Validate required configuration
 if (!$recaptcha_secret || !$contact_email || !$from_email) {
     http_response_code(500);
@@ -35,6 +40,7 @@ if (!$recaptcha_secret || !$contact_email || !$from_email) {
         'success' => false,
         'message' => 'Server configuration error. Please contact the administrator.'
     ]);
+    error_log('ERROR: Missing configuration - secret:' . ($recaptcha_secret ? 'YES' : 'NO') . ' email:' . ($contact_email ? 'YES' : 'NO') . ' from:' . ($from_email ? 'YES' : 'NO'));
     exit;
 }
 
@@ -65,11 +71,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'success' => false,
             'message' => 'reCAPTCHA token missing. Please try again.'
         ]);
+        error_log('ERROR: reCAPTCHA token missing');
         exit;
     }
 
     // Verify reCAPTCHA token with Google
     $recaptcha_verified = verify_recaptcha($recaptcha_token, $recaptcha_secret, $recaptcha_threshold);
+    
+    error_log('DEBUG: reCAPTCHA response - valid:' . ($recaptcha_verified['valid'] ? 'YES' : 'NO') . ' score:' . $recaptcha_verified['score']);
     
     if (!$recaptcha_verified['valid']) {
         http_response_code(400);
@@ -77,6 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'success' => false,
             'message' => 'reCAPTCHA verification failed. You may be a bot. Please try again.'
         ]);
+        error_log('ERROR: reCAPTCHA verification failed with score ' . $recaptcha_verified['score']);
         exit;
     }
 
@@ -132,12 +142,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             'success' => true,
             'message' => 'Thank you! Your message has been sent successfully.'
         ]);
+        error_log('SUCCESS: Email sent to ' . $contact_email);
     } else {
         http_response_code(500);
         echo json_encode([
             'success' => false,
             'message' => 'Sorry, there was a problem sending your message. Please try again later.'
         ]);
+        error_log('ERROR: Mail function failed');
     }
 } else {
     http_response_code(405);
@@ -173,9 +185,11 @@ function verify_recaptcha($token, $secret, $threshold = 0.5) {
         
         $response = curl_exec($ch);
         $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curl_error = curl_error($ch);
         curl_close($ch);
         
         if ($http_code !== 200 || !$response) {
+            error_log('ERROR: cURL request failed - HTTP ' . $http_code . ' - ' . $curl_error);
             return ['valid' => false, 'score' => 0.0];
         }
     } else {
@@ -192,6 +206,7 @@ function verify_recaptcha($token, $secret, $threshold = 0.5) {
         $response = @file_get_contents($url, false, $context);
         
         if ($response === false) {
+            error_log('ERROR: file_get_contents failed to reach reCAPTCHA API');
             return ['valid' => false, 'score' => 0.0];
         }
     }
@@ -199,7 +214,10 @@ function verify_recaptcha($token, $secret, $threshold = 0.5) {
     // Parse Google's response
     $result = json_decode($response, true);
     
+    error_log('DEBUG: Google reCAPTCHA response: ' . json_encode($result));
+    
     if (!isset($result['success']) || !$result['success']) {
+        error_log('ERROR: Google rejected reCAPTCHA token');
         return ['valid' => false, 'score' => 0.0];
     }
 
