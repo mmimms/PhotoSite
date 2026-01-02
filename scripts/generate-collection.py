@@ -2,26 +2,30 @@
 """
 Generate Collection Script
 Automates the process of adding a new photography collection to the portfolio.
+Also supports adding new images to existing collections (merge mode).
 
 Usage:
     python3 scripts/generate-collection.py <collection-folder-path>
 
 Example:
     python3 scripts/generate-collection.py assets/images/gallery/my-new-collection
+    python3 scripts/generate-collection.py assets/images/gallery/japan-2025  (with new images)
 
 Expected folder structure:
-    my-new-collection/
-    ├── full-res/           (required: your original JPGs)
+    my-collection/
+    ├── full-res/           (required: your JPGs - can add new ones)
     │   ├── image1.jpg
     │   ├── image2.jpg
     │   └── ...
-    └── thumbnails/         (will be created/populated)
+    ├── thumbnails/         (will be created/populated)
+    └── metadata.json       (optional: will be created or updated)
 
 This script will:
-    1. Generate thumbnails from full-res images
-    2. Create metadata.json with AI-assisted descriptions and tags (using Perplexity)
-    3. Update collections lists in JavaScript files
-    4. Generate metadata with smart featured selection
+    1. Detect if collection is new or existing
+    2. Generate thumbnails (new images only if updating)
+    3. Create or update metadata.json with AI-assisted descriptions and tags
+    4. Update collections lists in JavaScript files (new collections only)
+    5. Generate metadata with smart featured selection
 
 Requirements:
     pip install Pillow requests
@@ -78,8 +82,48 @@ def validate_collection_folder(collection_path):
     log('SUCCESS', f"Found {len(image_files)} images in full-res folder")
     return True
 
-def generate_thumbnails(collection_path):
-    """Generate thumbnail images from full-res originals."""
+def get_image_files(collection_path):
+    """Get sorted list of image files in collection."""
+    full_res_path = Path(collection_path) / 'full-res'
+    return sorted(full_res_path.glob('*.jpg')) + sorted(full_res_path.glob('*.JPG')) + sorted(full_res_path.glob('*.jpeg'))
+
+def check_if_existing_collection(collection_path):
+    """Check if collection already has metadata.json."""
+    metadata_path = Path(collection_path) / 'metadata.json'
+    return metadata_path.exists()
+
+def get_existing_image_filenames(collection_path):
+    """Get list of image filenames already in metadata.json."""
+    metadata_path = Path(collection_path) / 'metadata.json'
+    
+    if not metadata_path.exists():
+        return set()
+    
+    try:
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+        
+        existing_filenames = {img['filename'] for img in metadata.get('images', [])}
+        return existing_filenames
+    except Exception as e:
+        log('WARNING', f"Could not read existing metadata.json: {str(e)}")
+        return set()
+
+def find_new_images(collection_path):
+    """Find new images not yet in metadata.json."""
+    all_images = get_image_files(collection_path)
+    existing_filenames = get_existing_image_filenames(collection_path)
+    
+    new_images = [img for img in all_images if img.name not in existing_filenames]
+    
+    return new_images, len(all_images)
+
+def generate_thumbnails(collection_path, specific_images=None):
+    """Generate thumbnail images from full-res originals.
+    
+    If specific_images is provided, only generate for those.
+    Otherwise, generate for all images (skip existing if thumbnails exist).
+    """
     collection_path = Path(collection_path)
     full_res_path = collection_path / 'full-res'
     thumbnails_path = collection_path / 'thumbnails'
@@ -87,12 +131,21 @@ def generate_thumbnails(collection_path):
     # Create thumbnails folder if it doesn't exist
     thumbnails_path.mkdir(exist_ok=True)
     
-    image_files = sorted(full_res_path.glob('*.jpg')) + sorted(full_res_path.glob('*.JPG')) + sorted(full_res_path.glob('*.jpeg'))
-    
-    log('INFO', f"Generating thumbnails for {len(image_files)} images...")
+    if specific_images:
+        image_files = specific_images
+        log('INFO', f"Generating thumbnails for {len(image_files)} new images...")
+    else:
+        image_files = get_image_files(collection_path)
+        log('INFO', f"Generating thumbnails for {len(image_files)} images...")
     
     for image_file in image_files:
         try:
+            # Skip if thumbnail already exists
+            thumb_path = thumbnails_path / image_file.name
+            if thumb_path.exists() and specific_images is None:
+                log('SUCCESS', f"  ✓ {image_file.name} (thumbnail already exists)")
+                continue
+            
             # Open image
             img = Image.open(image_file)
             
@@ -229,115 +282,220 @@ Make sure tags are relevant to this specific image and the collection context.""
         log('WARNING', f"  Failed to generate metadata for {image_path.name}: {str(e)}")
         return None, None
 
-def generate_metadata(collection_path, collection_id, api_key):
-    """Generate metadata.json for the collection."""
+def load_existing_metadata(collection_path):
+    """Load existing metadata.json if it exists."""
+    metadata_path = Path(collection_path) / 'metadata.json'
+    
+    if metadata_path.exists():
+        try:
+            with open(metadata_path, 'r') as f:
+                return json.load(f)
+        except Exception as e:
+            log('WARNING', f"Could not load existing metadata: {str(e)}")
+            return None
+    
+    return None
+
+def generate_metadata(collection_path, collection_id, api_key, new_images_only=False):
+    """Generate metadata.json for the collection.
+    
+    If new_images_only=True, only generate for new images and merge with existing.
+    Otherwise, create fresh metadata for all images.
+    """
     collection_path = Path(collection_path)
-    full_res_path = collection_path / 'full-res'
     
-    log('INFO', "Generating metadata.json...")
+    # Check if this is an update to existing collection
+    existing_metadata = load_existing_metadata(collection_path) if new_images_only else None
     
-    # Get image files
-    image_files = sorted(full_res_path.glob('*.jpg')) + sorted(full_res_path.glob('*.JPG')) + sorted(full_res_path.glob('*.jpeg'))
-    
-    # Prompt user for collection info
-    print("\n" + "="*60)
-    print("COLLECTION INFORMATION")
-    print("="*60)
-    
-    collection_title = input("Collection Title (e.g., 'Japan 2025'): ").strip()
-    collection_location = input("Location(s) (e.g., 'Japan, Kyoto'): ").strip()
-    collection_date = input("Date/Year (e.g., '2025'): ").strip()
-    collection_description = input("Collection Description: ").strip()
-    
-    collection_info = {
-        'title': collection_title,
-        'location': collection_location,
-        'date': collection_date,
-        'description': collection_description
-    }
-    
-    print("\n" + "="*60)
-    print("GENERATING IMAGE METADATA")
-    print("="*60)
-    print(f"Using Perplexity AI to analyze {len(image_files)} images...\n")
-    
-    # Smart featured selection: mark first image and every 3rd image as featured
-    images_data = []
-    for idx, image_file in enumerate(image_files):
-        title, filename_desc = extract_metadata_from_filename(image_file.name)
+    if new_images_only and existing_metadata:
+        log('INFO', "Found existing metadata.json - entering MERGE mode")
+        log('INFO', "New images will be added to existing collection")
         
-        log('INFO', f"Analyzing {image_file.name}...")
+        # Get only new images
+        new_images, total_images = find_new_images(collection_path)
+        all_images = get_image_files(collection_path)
         
-        # Use Perplexity to generate description and tags
-        description, tags = generate_image_description_and_tags(
-            api_key,
-            image_file, 
-            title, 
-            collection_info
-        )
+        if not new_images:
+            log('WARNING', f"No new images found! All {total_images} images already in metadata.")
+            return
         
-        # Fallback to filename description if Perplexity fails
-        if not description:
-            description = filename_desc or f"A photograph from the {collection_title} collection"
+        log('INFO', f"Found {len(new_images)} new image(s) out of {total_images} total")
         
-        # Fallback to default tag if Perplexity fails
-        if not tags:
-            tags = ["travel"]
-        
-        log('SUCCESS', f"  Generated: {len(tags)} tags, description created")
-        
-        # Auto-feature: first image + every 3rd image + last image
-        is_featured = (idx == 0) or (idx % 3 == 0) or (idx == len(image_files) - 1)
-        
-        image_data = {
-            "id": title.lower().replace(' ', '-'),
-            "title": title,
-            "filename": image_file.name,
-            "description": description,
-            "location": collection_location,
-            "tags": tags,
-            "printSizes": [
-                {"size": "8x10", "price": 50},
-                {"size": "11x14", "price": 85},
-                {"size": "16x20", "price": 140},
-                {"size": "20x30", "price": 235}
-            ],
-            "featured": is_featured,
-            "printAvailable": True
+        # Use existing collection info
+        collection_info = {
+            'title': existing_metadata['collection']['title'],
+            'location': existing_metadata['collection']['location'],
+            'date': existing_metadata['collection']['date'],
+            'description': existing_metadata['collection']['description']
         }
         
-        images_data.append(image_data)
-    
-    # Create metadata object
-    metadata = {
-        "collection": {
-            "id": collection_id,
-            "title": collection_title,
-            "slug": collection_id,
-            "displayCategory": "Travel & Adventure",  # TODO: User should update
-            "description": collection_description,
-            "location": collection_location,
-            "date": collection_date,
-            "coverImage": images_data[0]["filename"],
-            "featured": True,
-            "printAvailable": True
-        },
-        "images": images_data
-    }
-    
-    # Save metadata.json
-    metadata_path = collection_path / 'metadata.json'
-    with open(metadata_path, 'w') as f:
-        json.dump(metadata, f, indent=2)
-    
-    log('SUCCESS', f"Created metadata.json")
-    log('INFO', f"  Collection: {collection_title}")
-    log('INFO', f"  Images: {len(images_data)}")
-    log('INFO', f"  Featured images: {sum(1 for img in images_data if img['featured'])}")
-    log('WARNING', "  ⚠ Remember to:")
-    log('WARNING', "    - Review descriptions (Perplexity made intelligent guesses)")
-    log('WARNING', "    - Review tags (Perplexity made intelligent guesses)")
-    log('WARNING', "    - Update displayCategory if needed")
+        print("\n" + "="*60)
+        print(f"UPDATING COLLECTION: {collection_id}")
+        print("="*60)
+        print(f"Existing title: {collection_info['title']}")
+        print(f"Existing location: {collection_info['location']}")
+        print(f"New images to process: {len(new_images)}")
+        print("="*60 + "\n")
+        
+        # Generate metadata only for new images
+        new_images_data = []
+        for new_image in new_images:
+            title, filename_desc = extract_metadata_from_filename(new_image.name)
+            log('INFO', f"Analyzing {new_image.name}...")
+            
+            description, tags = generate_image_description_and_tags(
+                api_key,
+                new_image,
+                title,
+                collection_info
+            )
+            
+            if not description:
+                description = filename_desc or f"A photograph from the {collection_info['title']} collection"
+            
+            if not tags:
+                tags = ["travel"]
+            
+            log('SUCCESS', f"  Generated: {len(tags)} tags, description created")
+            
+            image_data = {
+                "id": title.lower().replace(' ', '-'),
+                "title": title,
+                "filename": new_image.name,
+                "description": description,
+                "location": collection_info['location'],
+                "tags": tags,
+                "printSizes": [
+                    {"size": "8x10", "price": 50},
+                    {"size": "11x14", "price": 85},
+                    {"size": "16x20", "price": 140},
+                    {"size": "20x30", "price": 235}
+                ],
+                "featured": False,  # Will be recalculated
+                "printAvailable": True
+            }
+            
+            new_images_data.append(image_data)
+        
+        # Merge: keep existing images, add new ones
+        all_images_data = existing_metadata['images'] + new_images_data
+        
+        # Recalculate featured: first + every 3rd + last
+        for idx, img in enumerate(all_images_data):
+            img['featured'] = (idx == 0) or (idx % 3 == 0) or (idx == len(all_images_data) - 1)
+        
+        # Update metadata
+        updated_metadata = existing_metadata
+        updated_metadata['images'] = all_images_data
+        updated_metadata['collection']['coverImage'] = all_images_data[0]['filename']
+        
+        # Save metadata.json
+        metadata_path = collection_path / 'metadata.json'
+        with open(metadata_path, 'w') as f:
+            json.dump(updated_metadata, f, indent=2)
+        
+        log('SUCCESS', f"Updated metadata.json")
+        log('INFO', f"  Total images now: {len(all_images_data)}")
+        log('INFO', f"  New images added: {len(new_images_data)}")
+        log('INFO', f"  Featured images: {sum(1 for img in all_images_data if img['featured'])}")
+        
+    else:
+        # Fresh metadata generation (new collection)
+        log('INFO', "Generating fresh metadata.json for new collection")
+        
+        all_images = get_image_files(collection_path)
+        
+        # Prompt user for collection info
+        print("\n" + "="*60)
+        print("COLLECTION INFORMATION")
+        print("="*60)
+        
+        collection_title = input("Collection Title (e.g., 'Japan 2025'): ").strip()
+        collection_location = input("Location(s) (e.g., 'Japan, Kyoto'): ").strip()
+        collection_date = input("Date/Year (e.g., '2025'): ").strip()
+        collection_description = input("Collection Description: ").strip()
+        
+        collection_info = {
+            'title': collection_title,
+            'location': collection_location,
+            'date': collection_date,
+            'description': collection_description
+        }
+        
+        print("\n" + "="*60)
+        print("GENERATING IMAGE METADATA")
+        print("="*60)
+        print(f"Using Perplexity AI to analyze {len(all_images)} images...\n")
+        
+        images_data = []
+        for idx, image_file in enumerate(all_images):
+            title, filename_desc = extract_metadata_from_filename(image_file.name)
+            
+            log('INFO', f"Analyzing {image_file.name}...")
+            
+            description, tags = generate_image_description_and_tags(
+                api_key,
+                image_file,
+                title,
+                collection_info
+            )
+            
+            if not description:
+                description = filename_desc or f"A photograph from the {collection_title} collection"
+            
+            if not tags:
+                tags = ["travel"]
+            
+            log('SUCCESS', f"  Generated: {len(tags)} tags, description created")
+            
+            # Auto-feature: first image + every 3rd image + last image
+            is_featured = (idx == 0) or (idx % 3 == 0) or (idx == len(all_images) - 1)
+            
+            image_data = {
+                "id": title.lower().replace(' ', '-'),
+                "title": title,
+                "filename": image_file.name,
+                "description": description,
+                "location": collection_location,
+                "tags": tags,
+                "printSizes": [
+                    {"size": "8x10", "price": 50},
+                    {"size": "11x14", "price": 85},
+                    {"size": "16x20", "price": 140},
+                    {"size": "20x30", "price": 235}
+                ],
+                "featured": is_featured,
+                "printAvailable": True
+            }
+            
+            images_data.append(image_data)
+        
+        # Create metadata object
+        metadata = {
+            "collection": {
+                "id": collection_id,
+                "title": collection_title,
+                "slug": collection_id,
+                "displayCategory": "Travel & Adventure",
+                "description": collection_description,
+                "location": collection_location,
+                "date": collection_date,
+                "coverImage": images_data[0]["filename"],
+                "featured": True,
+                "printAvailable": True
+            },
+            "images": images_data
+        }
+        
+        # Save metadata.json
+        metadata_path = collection_path / 'metadata.json'
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        
+        log('SUCCESS', f"Created metadata.json")
+        log('INFO', f"  Collection: {collection_title}")
+        log('INFO', f"  Images: {len(images_data)}")
+        log('INFO', f"  Featured images: {sum(1 for img in images_data if img['featured'])}")
 
 def update_javascript_configs(collection_id):
     """Update JavaScript files with new collection."""
@@ -359,7 +517,6 @@ def update_javascript_configs(collection_id):
                 continue
             
             # Find the collections array and add new collection
-            # Pattern: const collections = [ ... ]
             pattern = r"(const collections = \[\s*)([^\]]+)(\s*\];)"
             
             def add_collection(match):
@@ -385,17 +542,17 @@ def update_javascript_configs(collection_id):
 
 def main():
     parser = argparse.ArgumentParser(
-        description='Generate a new photography collection for the portfolio',
+        description='Generate a new photography collection or add images to existing collection',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""Examples:
   python3 scripts/generate-collection.py assets/images/gallery/my-collection
-  python3 scripts/generate-collection.py assets/images/gallery/japan-2025
+  python3 scripts/generate-collection.py assets/images/gallery/japan-2025  (with new images)
         """
     )
     
     parser.add_argument(
         'collection_path',
-        help='Path to the new collection folder (must contain full-res/ with JPGs)'
+        help='Path to the collection folder (must contain full-res/ with JPGs)'
     )
     
     args = parser.parse_args()
@@ -415,38 +572,57 @@ def main():
     # Extract collection ID from path
     collection_id = Path(args.collection_path).name
     
+    # Check if this is an existing collection
+    is_existing = check_if_existing_collection(args.collection_path)
+    
     print("\n" + "="*60)
-    print(f"GENERATING COLLECTION: {collection_id}")
+    if is_existing:
+        print(f"DETECTED: Existing collection")
+    else:
+        print(f"DETECTED: New collection")
+    print(f"Collection ID: {collection_id}")
     print("="*60 + "\n")
     
     # Step 1: Generate thumbnails
     print("\n[STEP 1] Generating Thumbnails")
     print("-" * 60)
-    generate_thumbnails(args.collection_path)
+    if is_existing:
+        new_images, total = find_new_images(args.collection_path)
+        if new_images:
+            generate_thumbnails(args.collection_path, specific_images=new_images)
+        else:
+            log('INFO', f"All {total} images already have thumbnails. Skipping.")
+    else:
+        generate_thumbnails(args.collection_path)
     
     # Step 2: Generate metadata
     print("\n[STEP 2] Creating Metadata (with Perplexity AI)")
     print("-" * 60)
-    generate_metadata(args.collection_path, collection_id, api_key)
+    generate_metadata(args.collection_path, collection_id, api_key, new_images_only=is_existing)
     
-    # Step 3: Update JS configs
-    print("\n[STEP 3] Updating Configuration Files")
-    print("-" * 60)
-    update_javascript_configs(collection_id)
+    # Step 3: Update JS configs (only for new collections)
+    if not is_existing:
+        print("\n[STEP 3] Updating Configuration Files")
+        print("-" * 60)
+        update_javascript_configs(collection_id)
     
     # Summary
     print("\n" + "="*60)
-    print("✓ COLLECTION GENERATION COMPLETE!")
+    print("✓ COLLECTION PROCESSING COMPLETE!")
     print("="*60)
-    print(f"\nYour new collection '{collection_id}' is ready!\n")
+    print(f"\nCollection '{collection_id}' is ready!\n")
     print("Next steps:")
     print("  1. Review metadata.json (Perplexity made intelligent guesses)")
     print("  2. Customize tags and descriptions as needed")
-    print("  3. Update displayCategory if needed")
-    print("  4. git add assets/images/gallery/{}/".format(collection_id))
-    print("  5. git commit -m 'Add {} collection'".format(collection_id))
-    print("  6. git push origin main")
-    print("\nYour homepage will auto-update with the new collection!\n")
+    if not is_existing:
+        print("  3. Update displayCategory if needed")
+        print("  4. git add assets/images/gallery/{}/".format(collection_id))
+        print("  5. git commit -m 'Add {} collection'".format(collection_id))
+    else:
+        print("  3. git add assets/images/gallery/{}/".format(collection_id))
+        print("  4. git commit -m 'Update {} collection with new images'".format(collection_id))
+    print("  git push origin main")
+    print("\nYour homepage will auto-update!\n")
 
 if __name__ == '__main__':
     main()
