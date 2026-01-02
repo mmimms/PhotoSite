@@ -69,11 +69,11 @@ function createGallerySection(metadata) {
 
   section.appendChild(gallery);
 
-  // Link to full collection page
+  // Link to full collection page - UPDATED to use dynamic collection.html
   const viewMore = document.createElement('div');
   viewMore.className = 'view-collection-link';
   viewMore.innerHTML = `
-    <a href="galleries/${metadata.collection.slug}.html" aria-label="View full ${metadata.collection.title} collection">
+    <a href="collection.html?id=${metadata.collection.slug}" aria-label="View full ${metadata.collection.title} collection">
       View Full Collection &rarr;
     </a>
   `;
