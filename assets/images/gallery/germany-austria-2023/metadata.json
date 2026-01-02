@@ -1,0 +1,96 @@
+{
+  "collection": {
+    "id": "germany-austria-2023",
+    "title": "Germany & Austria 2023",
+    "slug": "germany-austria-2023",
+    "displayCategory": "Travel & Culture",
+    "description": "Journey through the Alps and historic European cities. Featuring iconic architecture, Alpine beauty, and the charm of Central Europe.",
+    "location": "Germany & Austria",
+    "date": "2023",
+    "coverImage": "Golden Hour Munich Clocktower - Screen.jpg",
+    "featured": false,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "golden-hour-munich-clocktower",
+      "title": "Golden Hour Munich Clocktower",
+      "filename": "Golden Hour Munich Clocktower - Screen.jpg",
+      "description": "Munich's iconic clocktower bathed in golden hour light, capturing the architectural beauty of Bavaria's capital.",
+      "location": "Munich, Germany",
+      "tags": ["travel", "architecture", "europe", "golden-hour", "city"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "hannah-hiking-austria",
+      "title": "Hannah Hiking in Austria",
+      "filename": "Hannah Hiking in Austria - Screen.jpg",
+      "description": "A portrait of adventure in the Austrian Alps. The beauty of travel and connection with nature.",
+      "location": "Austria",
+      "tags": ["travel", "adventure", "people", "mountains", "alps"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "schonbrunn-garden-water",
+      "title": "Schönbrunn Garden Water",
+      "filename": "Schönbrunn Garden Water - Screen.jpg",
+      "description": "The serene fountains and gardens of Vienna's Schönbrunn Palace, showcasing imperial elegance and Baroque beauty.",
+      "location": "Vienna, Austria",
+      "tags": ["travel", "architecture", "europe", "gardens", "palace"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "glass-and-stone",
+      "title": "Glass & Stone",
+      "filename": "Glass & Stone - Screen.jpg",
+      "description": "A contemporary view of European architecture, blending modern and historic elements in an urban landscape.",
+      "location": "Germany or Austria",
+      "tags": ["travel", "architecture", "europe", "modern", "urban"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "olpererhutte-crossing",
+      "title": "Ölpererhutte Crossing",
+      "filename": "Ölpererhutte Crossing - Screen.jpg",
+      "description": "A dramatic Alpine crossing at Ölpererhutte, capturing the raw beauty and challenge of mountain hiking.",
+      "location": "Austrian Alps",
+      "tags": ["travel", "adventure", "mountains", "alps", "hiking"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    }
+  ]
+}

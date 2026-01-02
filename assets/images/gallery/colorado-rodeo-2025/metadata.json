@@ -1,0 +1,96 @@
+{
+  "collection": {
+    "id": "colorado-rodeo-2025",
+    "title": "Colorado Rodeo 2025",
+    "slug": "colorado-rodeo-2025",
+    "displayCategory": "Action Sports",
+    "description": "High-octane action from the 2025 Colorado Springs Rodeo. Capturing the intensity, skill, and drama of professional rodeo competition.",
+    "location": "Colorado Springs, Colorado",
+    "date": "2025",
+    "coverImage": "Locked On.jpg",
+    "featured": true,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "locked-on",
+      "title": "Locked On",
+      "filename": "Locked On.jpg",
+      "description": "Intense focus captured in a moment of pure concentration during rodeo competition.",
+      "location": "Colorado Springs, CO",
+      "tags": ["rodeo", "action", "sports", "western", "featured"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 80},
+        {"size": "16x20", "price": 135},
+        {"size": "20x30", "price": 225}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "grit-and-rain",
+      "title": "Grit & Rain",
+      "filename": "Grit & Rain.jpg",
+      "description": "Rodeo action in challenging weather. Raw determination captured as dust and rain blend with pure western spirit.",
+      "location": "Colorado Springs, CO",
+      "tags": ["rodeo", "action", "sports", "western", "weather"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 80},
+        {"size": "16x20", "price": 135},
+        {"size": "20x30", "price": 225}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "weathering-the-storm",
+      "title": "Weathering the Storm",
+      "filename": "Weathering the Storm.jpg",
+      "description": "Dramatic skies and dramatic action—a rodeo moment set against nature's own spectacle.",
+      "location": "Colorado Springs, CO",
+      "tags": ["rodeo", "action", "sports", "western", "weather", "dramatic"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 80},
+        {"size": "16x20", "price": 135},
+        {"size": "20x30", "price": 225}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "rain-run",
+      "title": "Rain Run",
+      "filename": "Rain Run.jpg",
+      "description": "A rodeo athlete in motion, pushing through challenging conditions. Energy and determination on full display.",
+      "location": "Colorado Springs, CO",
+      "tags": ["rodeo", "action", "sports", "western", "motion"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 80},
+        {"size": "16x20", "price": 135},
+        {"size": "20x30", "price": 225}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "rodeo-in-rockies",
+      "title": "Rodeo in the Rockies",
+      "filename": "Rodeo in the Rockies.jpg",
+      "description": "The Colorado Spring Rodeo set against the backdrop of Rocky Mountain landscapes, where western tradition meets natural beauty.",
+      "location": "Colorado Springs, CO",
+      "tags": ["rodeo", "action", "sports", "western", "mountains"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 80},
+        {"size": "16x20", "price": 135},
+        {"size": "20x30", "price": 225}
+      ],
+      "featured": false,
+      "printAvailable": true
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "collection": {
+    "id": "celebration-christmas-2025",
+    "title": "Celebration Christmas 2025",
+    "slug": "celebration-christmas-2025",
+    "displayCategory": "Holidays & Events",
+    "description": "Festive holiday moments capturing the joy, warmth, and magic of the Christmas season.",
+    "location": "Various",
+    "date": "2025",
+    "coverImage": "Celebration Christmas Tree - Screen.jpg",
+    "featured": false,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "celebration-christmas-tree",
+      "title": "Celebration Christmas Tree",
+      "filename": "Celebration Christmas Tree - Screen.jpg",
+      "description": "A beautifully decorated Christmas tree capturing the warmth and joy of the holiday season.",
+      "location": "Various",
+      "tags": ["holiday", "christmas", "seasonal", "festive", "tree"],
+      "printSizes": [
+        {"size": "8x10", "price": 40},
+        {"size": "11x14", "price": 65},
+        {"size": "16x20", "price": 110},
+        {"size": "20x30", "price": 185}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "celebration-christmas-wide",
+      "title": "Celebration Christmas Wide",
+      "filename": "Celebration Christmas Wide - Screen.jpg",
+      "description": "A wide-angle perspective of holiday celebration, perfect for creating an immersive festive atmosphere in any space.",
+      "location": "Various",
+      "tags": ["holiday", "christmas", "seasonal", "festive", "celebration"],
+      "printSizes": [
+        {"size": "8x10", "price": 40},
+        {"size": "11x14", "price": 65},
+        {"size": "16x20", "price": 110},
+        {"size": "20x30", "price": 185}
+      ],
+      "featured": false,
+      "printAvailable": true
+    }
+  ]
+}

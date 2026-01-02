@@ -1,0 +1,128 @@
+{
+  "collection": {
+    "id": "big-bend-2025",
+    "title": "Big Bend 2025",
+    "slug": "big-bend-2025",
+    "displayCategory": "Western Landscapes",
+    "description": "Dramatic desert vistas and starry skies from Big Bend National Park. Featuring landscapes, wildlife, and astrophotography from this iconic Texas wilderness.",
+    "location": "Big Bend National Park, Texas",
+    "date": "2025",
+    "coverImage": "Milky Way Over Big Bend - Screen.jpg",
+    "featured": true,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "milky-way-over-big-bend",
+      "title": "Milky Way Over Big Bend",
+      "filename": "Milky Way Over Big Bend - Screen.jpg",
+      "description": "The Milky Way stretches across the desert sky over Big Bend National Park, showcasing the incredible dark skies of this remote location.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "night-sky", "milky-way", "desert", "astrophotography", "featured"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "tunnel-to-rio-grande",
+      "title": "Tunnel to the Rio Grande",
+      "filename": "Tunnel to the Rio Grande - Screen.jpg",
+      "description": "A natural tunnel carved through desert rock, framing the Rio Grande beyond. A dramatic composition of geological wonder.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "desert", "geology", "rock-formations", "featured"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "westward",
+      "title": "Westward",
+      "filename": "Westward - Screen.jpg",
+      "description": "Golden hour light illuminates the desert landscape, revealing layers of color and texture in the Big Bend wilderness.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "golden-hour", "desert", "color"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "the-clay-bank",
+      "title": "The Clay Bank",
+      "filename": "The Clay Bank - Screen.jpg",
+      "description": "Rusty clay formations create bold color contrasts against the desert sky, showcasing Big Bend's geological diversity.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "geology", "texture", "color"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "building-in-chisos",
+      "title": "Building in the Chisos",
+      "filename": "Building in the Chisos - Screen.jpg",
+      "description": "Historic stone architecture blends with the desert landscape in this portrait of Big Bend's cultural heritage.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "architecture", "history", "desert"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "chisos-scrub-jay",
+      "title": "Chisos Scrub Jay",
+      "filename": "Chisos Scrub Jay - Screen.jpg",
+      "description": "An endemic bird species of the Chisos Mountains, captured in vibrant blue plumage against the desert landscape.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["wildlife", "birds", "nature", "desert"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "dorgan-sublett-passage-to-moon",
+      "title": "Dorgan-Sublett Passage to the Moon",
+      "filename": "Dorgan-Sublett Passage to the Moon - Screen.jpg",
+      "description": "A poetic composition with the moon framed by desert rock formations, capturing the magic of Big Bend's night landscape.",
+      "location": "Big Bend National Park, TX",
+      "tags": ["landscape", "night-sky", "moon", "astrophotography"],
+      "printSizes": [
+        {"size": "8x10", "price": 45},
+        {"size": "11x14", "price": 75},
+        {"size": "16x20", "price": 125},
+        {"size": "20x30", "price": 195}
+      ],
+      "featured": false,
+      "printAvailable": true
+    }
+  ]
+}

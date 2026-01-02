@@ -1,0 +1,240 @@
+{
+  "collection": {
+    "id": "japan-2025",
+    "title": "Japan 2025",
+    "slug": "japan-2025",
+    "displayCategory": "Travel & Adventure",
+    "description": "A visual journey through Japan's iconic landscapes, cultural treasures, and spiritual destinations. From cherry blossom season to ancient temples, capturing the essence of Japanese beauty.",
+    "location": "Japan",
+    "date": "2025",
+    "coverImage": "Hanami At Himeji - Screen.jpg",
+    "featured": true,
+    "printAvailable": true
+  },
+  "images": [
+    {
+      "id": "hanami-at-himeji",
+      "title": "Hanami At Himeji",
+      "filename": "Hanami At Himeji - Screen.jpg",
+      "description": "Himeji Castle framed by blooming cherry blossoms, one of Japan's most iconic spring scenes. A masterpiece of natural and architectural beauty.",
+      "location": "Himeji, Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "castle", "spring", "featured"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": true,
+      "printAvailable": true
+    },
+    {
+      "id": "hanami-at-himeji-horizontal",
+      "title": "Hanami At Himeji Horizontal",
+      "filename": "Hanami At Himeji Horizontal - Screen.jpg",
+      "description": "A panoramic view of Himeji Castle's magnificent grounds during cherry blossom season, emphasizing the expanse of spring blooms.",
+      "location": "Himeji, Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "castle", "spring", "panoramic"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "himeji-in-bloom",
+      "title": "Himeji in Bloom",
+      "filename": "Himeji in Bloom - Screen .jpg",
+      "description": "Another stunning perspective of Himeji Castle during the cherry blossom peak season, capturing the romantic atmosphere of hanami.",
+      "location": "Himeji, Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "castle", "spring"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "kiyomizu-dera-cherry-blossoms",
+      "title": "Kiyomizu-dera Through Cherry Blossoms",
+      "filename": "Kiyomizu-dera Through Cherry Blossoms - Screen.jpg",
+      "description": "Kyoto's iconic Kiyomizu-dera Temple framed through delicate cherry blossoms, creating a serene and spiritual moment.",
+      "location": "Kyoto, Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "temple", "spring", "spiritual"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "among-cherry-blossoms",
+      "title": "Among the Cherry Blossoms",
+      "filename": "Among the Cherry Blossoms - Screen.jpg",
+      "description": "An intimate portrait surrounded by the delicate beauty of cherry blossoms, capturing the joy and wonder of spring in Japan.",
+      "location": "Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "spring", "portrait"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "kenroku-en-in-bloom",
+      "title": "Kenroku-en In Bloom",
+      "filename": "Kenroku-en In Bloom - Screen.jpg",
+      "description": "One of Japan's three great gardens, Kenroku-en in Kanazawa, captured during the spectacular cherry blossom season.",
+      "location": "Kanazawa, Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "garden", "spring"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "ascension",
+      "title": "Ascension",
+      "filename": "Ascension - Screen.jpg",
+      "description": "A dramatic composition capturing elevation and spiritual ascent, showcasing Japan's dramatic landscapes and architecture.",
+      "location": "Japan",
+      "tags": ["travel", "japan", "architecture", "dramatic", "spiritual"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "before-the-city-wakes",
+      "title": "Before the City Wakes",
+      "filename": "Before the City Wakes - Screen.jpg",
+      "description": "A serene early morning moment in Japan's urban landscape, capturing the quiet beauty before the day begins.",
+      "location": "Japan",
+      "tags": ["travel", "japan", "city", "morning", "urban"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "silent-sakura-street",
+      "title": "Silent Sakura Street",
+      "filename": "Silent Sakura Street - Screen.jpg",
+      "description": "A peaceful street lined with cherry blossom trees, evoking the tranquility and beauty of spring in Japanese urban spaces.",
+      "location": "Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "street", "spring", "peaceful"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "samurai-at-gate",
+      "title": "Samurai At The Gate",
+      "filename": "Samurai At The Gate - Screen.jpg",
+      "description": "A cultural portrait capturing the spirit of Japan's samurai heritage, blending history with contemporary photography.",
+      "location": "Japan",
+      "tags": ["travel", "japan", "culture", "history", "samurai", "gate"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "samurai-beyond-gate",
+      "title": "Samurai Beyond The Gate",
+      "filename": "Samurai Beyond The Gate - Screen.jpg",
+      "description": "A layered composition playing with depth and perspective, exploring the mystique of Japan's cultural heritage.",
+      "location": "Japan",
+      "tags": ["travel", "japan", "culture", "history", "samurai", "portrait"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "yozakura",
+      "title": "Yozakura",
+      "filename": "Yozakura - Screen.jpg",
+      "description": "Cherry blossoms illuminated under evening light, capturing the magical night-blooming season celebrated throughout Japan.",
+      "location": "Japan",
+      "tags": ["travel", "cherry-blossom", "japan", "night", "spring", "magical"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "ueno-park-lanterns",
+      "title": "Ueno Park Lanterns",
+      "filename": "Ueno Park Lanterns - Screen.jpg",
+      "description": "Traditional lanterns illuminate the pathways of Tokyo's Ueno Park, creating an atmosphere of timeless Japanese beauty.",
+      "location": "Tokyo, Japan",
+      "tags": ["travel", "japan", "park", "architecture", "evening", "lanterns"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    },
+    {
+      "id": "hitachi-tower-in-camera",
+      "title": "Hitachi Tower - In Camera",
+      "filename": "Hitachi Tower - In Camera - Screen.jpg",
+      "description": "A modern perspective on Japan's urban landscape, showcasing contemporary architecture and city life.",
+      "location": "Hitachi, Japan",
+      "tags": ["travel", "japan", "city", "architecture", "modern", "urban"],
+      "printSizes": [
+        {"size": "8x10", "price": 50},
+        {"size": "11x14", "price": 85},
+        {"size": "16x20", "price": 140},
+        {"size": "20x30", "price": 235}
+      ],
+      "featured": false,
+      "printAvailable": true
+    }
+  ]
+}
