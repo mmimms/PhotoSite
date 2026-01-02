@@ -29,22 +29,6 @@
       "printAvailable": true
     },
     {
-      "id": "hannah-hiking-austria",
-      "title": "Hannah Hiking in Austria",
-      "filename": "Hannah Hiking in Austria - Screen.jpg",
-      "description": "A portrait of adventure in the Austrian Alps. The beauty of travel and connection with nature.",
-      "location": "Austria",
-      "tags": ["travel", "adventure", "people", "mountains", "alps"],
-      "printSizes": [
-        {"size": "8x10", "price": 45},
-        {"size": "11x14", "price": 75},
-        {"size": "16x20", "price": 125},
-        {"size": "20x30", "price": 195}
-      ],
-      "featured": false,
-      "printAvailable": true
-    },
-    {
       "id": "schonbrunn-garden-water",
       "title": "Schönbrunn Garden Water",
       "filename": "Schönbrunn Garden Water - Screen.jpg",
