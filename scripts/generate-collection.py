@@ -19,9 +19,12 @@ Expected folder structure:
 
 This script will:
     1. Generate thumbnails from full-res images
-    2. Create metadata.json with AI-assisted descriptions
+    2. Create metadata.json with AI-assisted descriptions and tags
     3. Update collections lists in JavaScript files
     4. Generate metadata with smart featured selection
+
+Requirements:
+    pip install Pillow anthropic
 """
 
 import os
@@ -31,6 +34,14 @@ import argparse
 from pathlib import Path
 from PIL import Image
 import re
+import base64
+
+try:
+    from anthropic import Anthropic
+except ImportError:
+    print("\033[91m[ERROR]\033[0m anthropic module not found.")
+    print("Install it with: pip install anthropic")
+    sys.exit(1)
 
 # Constants
 THUMBNAIL_WIDTH = 400
@@ -131,9 +142,88 @@ def extract_metadata_from_filename(filename):
     parts = name.split(' - ', 1)
     
     title = parts[0].strip()
-    description = parts[1].strip() if len(parts) > 1 else f"A photograph from the collection"
+    description = parts[1].strip() if len(parts) > 1 else None
     
     return title, description
+
+def generate_image_description_and_tags(client, image_path, title, collection_info):
+    """Use Claude to generate intelligent descriptions and tags for an image."""
+    try:
+        # Read and encode image
+        with open(image_path, 'rb') as f:
+            image_data = base64.standard_b64encode(f.read()).decode('utf-8')
+        
+        # Determine image type
+        image_ext = image_path.suffix.lower()
+        if image_ext in ['.jpg', '.jpeg']:
+            media_type = 'image/jpeg'
+        elif image_ext == '.png':
+            media_type = 'image/png'
+        else:
+            media_type = 'image/jpeg'
+        
+        # Create prompt for Claude
+        prompt = f"""You are a photography metadata expert. Analyze this photograph and provide metadata for a photography portfolio.
+
+Collection Context:
+- Title: {collection_info['title']}
+- Location: {collection_info['location']}
+- Date: {collection_info['date']}
+- Description: {collection_info['description']}
+
+Image Title: {title}
+
+Provide your response in this exact JSON format (no additional text):
+{{
+  "description": "A compelling 1-2 sentence description of the photograph that would appeal to someone considering purchasing a print. Focus on what makes this image special, the mood, and the visual elements.",
+  "tags": ["tag1", "tag2", "tag3", ...]
+}}
+
+For tags, choose from this list where relevant: travel, landscape, nature, cherry-blossom, japan, castle, spring, temple, garden, city, park, evening, lanterns, portrait, street, night, magical, peaceful, architecture, modern, urban, culture, history, samurai, gate, spiritual, dramatic, desert, wildlife, mountains, panoramic, featured, astro, city-lights, historical, seasonal, weather, western, geology, rock-formations, rodeo, celebration, festive, holiday, christmas, people, action, sports, alps, hiking, countryside, europe, austria, germany, color, texture, tree, water, waterfall, sunrise, sunset, moon, stars, milky-way, aurora
+
+Make sure tags are relevant to this specific image and the collection context."""
+        
+        # Call Claude API with vision
+        message = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=500,
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "image",
+                            "source": {
+                                "type": "base64",
+                                "media_type": media_type,
+                                "data": image_data,
+                            },
+                        },
+                        {
+                            "type": "text",
+                            "text": prompt
+                        }
+                    ],
+                }
+            ],
+        )
+        
+        # Parse response
+        response_text = message.content[0].text
+        
+        # Try to extract JSON from response
+        # Sometimes Claude wraps it in markdown code blocks
+        json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+        if json_match:
+            metadata = json.loads(json_match.group())
+            return metadata['description'], metadata['tags']
+        else:
+            log('WARNING', f"  Could not parse Claude response for {image_path.name}")
+            return None, None
+    
+    except Exception as e:
+        log('WARNING', f"  Failed to generate metadata for {image_path.name}: {str(e)}")
+        return None, None
 
 def generate_metadata(collection_path, collection_id):
     """Generate metadata.json for the collection."""
@@ -155,10 +245,45 @@ def generate_metadata(collection_path, collection_id):
     collection_date = input("Date/Year (e.g., '2025'): ").strip()
     collection_description = input("Collection Description: ").strip()
     
+    collection_info = {
+        'title': collection_title,
+        'location': collection_location,
+        'date': collection_date,
+        'description': collection_description
+    }
+    
+    # Initialize Claude client
+    client = Anthropic()
+    
+    print("\n" + "="*60)
+    print("GENERATING IMAGE METADATA")
+    print("="*60)
+    print(f"Using Claude to analyze {len(image_files)} images...\n")
+    
     # Smart featured selection: mark first image and every 3rd image as featured
     images_data = []
     for idx, image_file in enumerate(image_files):
-        title, description = extract_metadata_from_filename(image_file.name)
+        title, filename_desc = extract_metadata_from_filename(image_file.name)
+        
+        log('INFO', f"Analyzing {image_file.name}...")
+        
+        # Use Claude to generate description and tags
+        description, tags = generate_image_description_and_tags(
+            client, 
+            image_file, 
+            title, 
+            collection_info
+        )
+        
+        # Fallback to filename description if Claude fails
+        if not description:
+            description = filename_desc or f"A photograph from the {collection_title} collection"
+        
+        # Fallback to default tag if Claude fails
+        if not tags:
+            tags = ["travel"]
+        
+        log('SUCCESS', f"  Generated: {len(tags)} tags, description created")
         
         # Auto-feature: first image + every 3rd image + last image
         is_featured = (idx == 0) or (idx % 3 == 0) or (idx == len(image_files) - 1)
@@ -169,7 +294,7 @@ def generate_metadata(collection_path, collection_id):
             "filename": image_file.name,
             "description": description,
             "location": collection_location,
-            "tags": ["travel"],  # Default tag, user should update
+            "tags": tags,
             "printSizes": [
                 {"size": "8x10", "price": 50},
                 {"size": "11x14", "price": 85},
@@ -209,9 +334,9 @@ def generate_metadata(collection_path, collection_id):
     log('INFO', f"  Images: {len(images_data)}")
     log('INFO', f"  Featured images: {sum(1 for img in images_data if img['featured'])}")
     log('WARNING', "  ⚠ Remember to:")
-    log('WARNING', "    - Add specific tags to each image (landscape, nature, etc)")
-    log('WARNING', "    - Update displayCategory")
-    log('WARNING', "    - Review and edit descriptions")
+    log('WARNING', "    - Review descriptions (Claude made intelligent guesses)")
+    log('WARNING', "    - Review tags (Claude made intelligent guesses)")
+    log('WARNING', "    - Update displayCategory if needed")
 
 def update_javascript_configs(collection_id):
     """Update JavaScript files with new collection."""
@@ -274,6 +399,12 @@ def main():
     
     args = parser.parse_args()
     
+    # Check for API key
+    if not os.environ.get('ANTHROPIC_API_KEY'):
+        log('ERROR', "ANTHROPIC_API_KEY environment variable not set")
+        log('INFO', "Set it with: export ANTHROPIC_API_KEY='sk-ant-...'")
+        sys.exit(1)
+    
     # Validate
     if not validate_collection_folder(args.collection_path):
         sys.exit(1)
@@ -291,7 +422,7 @@ def main():
     generate_thumbnails(args.collection_path)
     
     # Step 2: Generate metadata
-    print("\n[STEP 2] Creating Metadata")
+    print("\n[STEP 2] Creating Metadata (with AI)")
     print("-" * 60)
     generate_metadata(args.collection_path, collection_id)
     
@@ -306,8 +437,8 @@ def main():
     print("="*60)
     print(f"\nYour new collection '{collection_id}' is ready!\n")
     print("Next steps:")
-    print("  1. Review and edit metadata.json")
-    print("  2. Add specific tags to each image")
+    print("  1. Review metadata.json (Claude made intelligent guesses)")
+    print("  2. Customize tags and descriptions as needed")
     print("  3. Update displayCategory if needed")
     print("  4. git add assets/images/gallery/{}/".format(collection_id))
     print("  5. git commit -m 'Add {} collection'".format(collection_id))
