@@ -1,10 +1,10 @@
 /**
  * Lightbox functionality for image galleries
  * Handles click events on gallery images and displays them in a modal overlay
+ * Uses event delegation to support both static and dynamically-created images
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const triggers = document.querySelectorAll(".js-lightbox-trigger");
   const lightbox = document.getElementById("lightbox");
   const lightboxImage = document.getElementById("lightbox-image");
   const lightboxCaption = document.getElementById("lightbox-caption");
@@ -42,11 +42,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * Attach click handlers to all gallery images
+   * Event delegation: Listen for clicks on the document
+   * Check if clicked element is a lightbox trigger
+   * This works for both static and dynamically-created images
    */
-  triggers.forEach((img) => {
-    img.style.cursor = "zoom-in";
-    img.addEventListener("click", () => openLightbox(img));
+  document.addEventListener("click", (event) => {
+    const trigger = event.target.closest(".js-lightbox-trigger");
+    
+    if (trigger) {
+      event.preventDefault();
+      trigger.style.cursor = "zoom-in";
+      openLightbox(trigger);
+    }
   });
 
   /**
