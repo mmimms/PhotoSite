@@ -278,60 +278,99 @@
     © 2025 Mark Mimms · Photography &amp; Prints · <a href="https://github.com/mmimms/PhotoSite">Repository</a>
   </footer>
 
-  <!-- Google reCAPTCHA v3 Script -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Google reCAPTCHA v3 Script - MUST LOAD FIRST AND ASYNC -->
+  <script src="https://www.google.com/recaptcha/api.js?render=explicit" async defer onload="initializeRecaptcha()"></script>
 
   <script>
-    // Handle contact form submission via AJAX
-    const contactForm = document.getElementById('contact-form');
+    // Configuration - CHANGE THIS TO YOUR ACTUAL SITE KEY
+    const RECAPTCHA_SITE_KEY = '6LfPYD4sAAAAAPRMlxjWVUfcCqf71v00nsoikDH_';
 
-    if (contactForm) {
-      contactForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const submitButton = this.querySelector('button[type="submit"]');
-        const originalText = submitButton.textContent;
-
-        // Disable button and show loading state
-        submitButton.disabled = true;
-        submitButton.textContent = 'Sending...';
-
-        try {
-          // Get reCAPTCHA v3 token
-          const token = await grecaptcha.execute('6LfPYD4sAAAAAPRMlxjWVUfcCqf71v00nsoikDH_', { action: 'submit' });
-          document.getElementById('recaptcha-token').value = token;
-
-          // Create FormData from the form
-          const formData = new FormData(this);
-
-          // Send the form data
-          const response = await fetch('contact.php', {
-            method: 'POST',
-            body: formData
-          });
-
-          // Parse JSON response
-          const data = await response.json();
-
-          if (response.ok && data.success) {
-            // Success!
-            showNotification(data.message || 'Thank you! Your message has been sent.', 'success');
-            this.reset(); // Clear the form
-          } else {
-            // Error from server
-            showNotification(data.message || 'Sorry, there was a problem sending your message.', 'error');
-          }
-        } catch (error) {
-          // Network error or JSON parsing error
-          console.error('Form submission error:', error);
-          showNotification('Network error. Please check your connection and try again.', 'error');
-        } finally {
-          // Re-enable button and restore text
-          submitButton.disabled = false;
-          submitButton.textContent = originalText;
-        }
-      });
+    /**
+     * Initialize reCAPTCHA when the script loads
+     * This function is called by the onload handler in the script tag
+     */
+    function initializeRecaptcha() {
+      console.log('reCAPTCHA script loaded successfully');
+      console.log('RECAPTCHA_SITE_KEY:', RECAPTCHA_SITE_KEY);
+      
+      // Verify grecaptcha object is available
+      if (typeof grecaptcha === 'undefined') {
+        console.error('grecaptcha object not found after API load');
+        showNotification('reCAPTCHA failed to load. Please refresh the page.', 'error');
+      } else {
+        console.log('grecaptcha object available');
+      }
     }
+
+    // Handle contact form submission via AJAX
+    document.addEventListener('DOMContentLoaded', function() {
+      const contactForm = document.getElementById('contact-form');
+
+      if (contactForm) {
+        contactForm.addEventListener('submit', async function(e) {
+          e.preventDefault();
+
+          const submitButton = this.querySelector('button[type="submit"]');
+          const originalText = submitButton.textContent;
+
+          // Disable button and show loading state
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending...';
+
+          try {
+            // Wait for grecaptcha to be available
+            if (typeof grecaptcha === 'undefined') {
+              throw new Error('reCAPTCHA API not loaded. Please refresh and try again.');
+            }
+
+            // Get reCAPTCHA v3 token
+            console.log('Calling grecaptcha.execute with site key:', RECAPTCHA_SITE_KEY);
+            const token = await grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit' });
+            
+            if (!token) {
+              throw new Error('Failed to get reCAPTCHA token');
+            }
+            
+            console.log('reCAPTCHA token received:', token.substring(0, 20) + '...');
+            document.getElementById('recaptcha-token').value = token;
+
+            // Create FormData from the form
+            const formData = new FormData(this);
+
+            // Send the form data
+            console.log('Sending form data to contact.php');
+            const response = await fetch('contact.php', {
+              method: 'POST',
+              body: formData
+            });
+
+            // Parse JSON response
+            const data = await response.json();
+            console.log('Response from server:', data);
+
+            if (response.ok && data.success) {
+              // Success!
+              showNotification(data.message || 'Thank you! Your message has been sent.', 'success');
+              this.reset(); // Clear the form
+            } else {
+              // Error from server
+              showNotification(data.message || 'Sorry, there was a problem sending your message.', 'error');
+            }
+          } catch (error) {
+            // Network error or JSON parsing error
+            console.error('Form submission error:', error);
+            showNotification(
+              'Error: ' + (error.message || 'Network error. Please check your connection and try again.'),
+              'error'
+            );
+          } finally {
+            // Re-enable button and restore text
+            submitButton.disabled = false;
+            submitButton.textContent = originalText;
+          }
+        });
+      }
+    });
 
     /**
      * Display a notification message
