@@ -1,6 +1,7 @@
 /**
  * Gallery Loader
  * Dynamically loads metadata.json files and renders gallery sections
+ * Shows only featured images on homepage as curated previews
  */
 
 (async function loadGalleries() {
@@ -41,6 +42,7 @@
 
 /**
  * Creates a gallery section element from metadata
+ * Shows only featured images as a curated preview
  */
 function createGallerySection(metadata) {
   const section = document.createElement('section');
@@ -57,24 +59,32 @@ function createGallerySection(metadata) {
   `;
   section.appendChild(collectionHeader);
 
-  // Gallery grid
+  // Gallery grid - show only featured images
   const gallery = document.createElement('div');
   gallery.className = 'gallery';
 
+  // Filter to featured images only, fallback to first 6 if no featured images exist
+  const featuredImages = metadata.images.filter(img => img.featured);
+  const imagesToDisplay = featuredImages.length > 0 ? featuredImages : metadata.images.slice(0, 6);
+
   // Add each image
-  metadata.images.forEach((image, index) => {
+  imagesToDisplay.forEach((image) => {
     const figure = createImageFigure(image, metadata.collection.id);
     gallery.appendChild(figure);
   });
 
   section.appendChild(gallery);
 
-  // Link to full collection page - UPDATED to use dynamic collection.html
+  // Link to full collection page
   const viewMore = document.createElement('div');
   viewMore.className = 'view-collection-link';
+  const imageCount = metadata.images.length;
+  const hiddenCount = imageCount - imagesToDisplay.length;
+  const countText = hiddenCount > 0 ? ` (+${hiddenCount} more)` : '';
+  
   viewMore.innerHTML = `
-    <a href="collection.html?id=${metadata.collection.slug}" aria-label="View full ${metadata.collection.title} collection">
-      View Full Collection &rarr;
+    <a href="collection.html?id=${metadata.collection.slug}" aria-label="View all ${imageCount} images in ${metadata.collection.title} collection">
+      View Full Collection${countText} &rarr;
     </a>
   `;
   section.appendChild(viewMore);
