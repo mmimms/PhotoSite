@@ -150,3 +150,5 @@ coverage/
 # - !assets/**/metadata.json
 # - !.vscode/launch.json
 # - !.env.example
+# Custom API integrations (sensitive)
+/custom/api/
