@@ -152,3 +152,35 @@ coverage/
 # - !.env.example
 # Custom API integrations (sensitive)
 /custom/api/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Custom API integrations (private backend)
+/custom/api/
+/custom/config/
+
+# Sensitive files
+*.key
+*.pem
+config.php
+
+# Dependencies
+/node_modules/
+/vendor/
+
+# Logs
+*.log
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
