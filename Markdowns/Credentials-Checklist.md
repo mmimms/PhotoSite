@@ -29,37 +29,37 @@ I need you to access cPanel and provide:
 
 ```
 DATABASE CREDENTIALS:
-☐ Database Host: _______________________________
+□ Database Host: _______________________________
   (Usually: localhost)
 
-☐ Database Name: _______________________________
+□ Database Name: _______________________________
   (Name of the OpenCart database)
 
-☐ Database Username: _______________________________
+□ Database Username: _______________________________
 
-☐ Database Password: _______________________________
+□ Database Password: _______________________________
 
 FILEZILLA FTP ACCESS:
-☐ FTP/SFTP Host: _______________________________
+□ FTP/SFTP Host: _______________________________
   (Server hostname or IP)
 
-☐ FTP Username: _______________________________
+□ FTP Username: _______________________________
   (Your cPanel username or FTP user)
 
-☐ FTP Password: _______________________________
+□ FTP Password: _______________________________
 
-☐ Port: _______________________________
+□ Port: _______________________________
   (Usually 21 for FTP, 22 for SFTP)
 
 PHP VERSION:
-☐ PHP Version: _______________________________
+□ PHP Version: _______________________________
   (Should be 7.4+)
   
 ADDITIONAL INFO:
-☐ cPanel URL: _______________________________
+□ cPanel URL: _______________________________
   (For direct access if needed)
 
-☐ Email to access cPanel: _______________________________
+□ Email to access cPanel: _______________________________
 ```
 
 **How to Find These:**
@@ -105,14 +105,14 @@ Once logged in to Stripe Dashboard:
 
 ```
 STRIPE API KEYS (TEST MODE FIRST):
-☐ Publishable Key (pk_test_...): _______________________________
+□ Publishable Key (pk_test_...): _______________________________
   Location: Developers → API Keys → Publishable key
 
-☐ Secret Key (sk_test_...): _______________________________
+□ Secret Key (sk_test_...): _______________________________
   Location: Developers → API Keys → Secret key
 
 STRIPE WEBHOOK SECRET:
-☐ Webhook Secret (whsec_...): _______________________________
+□ Webhook Secret (whsec_...): _______________________________
   Location: Developers → Webhooks → signing secret
   
   To create webhook:
@@ -156,25 +156,35 @@ Stripe Webhook: whsec_____________
 
 **Step 3: Get API Credentials**
 
-Once logged in to Print Space Dashboard:
+Once logged in to Print Space CreativeHub Dashboard:
 
 ```
 PRINT SPACE API CREDENTIALS:
-☐ API Key: _______________________________
+□ API Key: _______________________________
   Location: Account Settings → API Keys → Your API Key
   
-  If not visible:
-  1. Click "Generate API Key"
+  Steps:
+  1. Click "Generate API Key" (or "Create New Key")
   2. Name it: "mimmsphoto-opencart"
-  3. Copy the key shown
+  3. Leave webhook URI blank for now (we'll add after deployment)
+  4. Copy the API key shown
+  5. Save it securely
 
-☐ Merchant ID: _______________________________
-  (Usually shown in Account settings, or use default)
+□ Merchant ID: _______________________________
+  (OPTIONAL - not always visible in CreativeHub)
+  If not visible in Account Settings, leave blank
+  API Key alone is sufficient for integration
 
 ENDPOINT:
 Print Space API Base: https://api.theprintspace.com/v1
 (Already configured in our code)
 ```
+
+**About Webhook URI:**
+- Leave blank when creating the key
+- We'll add it AFTER Stage 5 deployment
+- Print Space will test the connection once it's live
+- Don't add until the webhook handler code is deployed
 
 **Test Submission (Optional but Recommended):**
 - After creating account, test a small order
@@ -205,7 +215,7 @@ Once logged in to Prodigi Dashboard:
 
 ```
 PRODIGI API CREDENTIALS:
-☐ API Key: _______________________________
+□ API Key: _______________________________
   Location: Settings → Integrations → API → API Key
   
   If not visible:
@@ -214,8 +224,8 @@ PRODIGI API CREDENTIALS:
   3. Select Scope: "Full Access"
   4. Copy the key
 
-☐ Merchant ID: _______________________________
-  (Optional, use default if not provided)
+□ Merchant ID: _______________________________
+  (OPTIONAL - use if available, otherwise leave blank)
 
 ENDPOINT:
 Prodigi API Base: https://api.prodigi.com/v4.0
@@ -258,9 +268,9 @@ If your host provides SSH:
 
 ```
 SSH/SFTP ACCESS (for direct uploads):
-☐ SSH/SFTP Enabled: YES / NO
-☐ Tested Connection: YES / NO
-☐ Can access /public_html/shop/: YES / NO
+□ SSH/SFTP Enabled: YES / NO
+□ Tested Connection: YES / NO
+□ Can access /public_html/shop/: YES / NO
 ```
 
 ---
@@ -272,10 +282,10 @@ You mentioned self-hosted email is already working at `info@mimmsphoto.com`
 **Confirm:**
 ```
 SELF-HOSTED EMAIL:
-☐ Email Address: info@mimmsphoto.com
-☐ Already Configured: YES ✅
-☐ Can receive mail: YES ✅
-☐ Can send mail: YES ✅
+□ Email Address: info@mimmsphoto.com
+□ Already Configured: YES ✅
+□ Can receive mail: YES ✅
+□ Can send mail: YES ✅
 ```
 
 No action needed here - we'll use this for order confirmations.
@@ -289,36 +299,36 @@ No action needed here - we'll use this for order confirmations.
 Once you gather all credentials, check them off:
 
 ```
-════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════
 
 HOSTING & DATABASE:
-☐ Database Host: ________________
-☐ Database Name: ________________
-☐ Database User: ________________
-☐ Database Password: ________________
-☐ FTP Host: ________________
-☐ FTP User: ________________
-☐ FTP Password: ________________
-☐ FTP Port: ________________
-☐ PHP Version (7.4+?): ________________
+□ Database Host: ________________
+□ Database Name: ________________
+□ Database User: ________________
+□ Database Password: ________________
+□ FTP Host: ________________
+□ FTP User: ________________
+□ FTP Password: ________________
+□ FTP Port: ________________
+□ PHP Version (7.4+?): ________________
 
 STRIPE (TEST):
-☐ Public Key (pk_test_...): ________________
-☐ Secret Key (sk_test_...): ________________
-☐ Webhook Secret (whsec_...): ________________
+□ Public Key (pk_test_...): ________________
+□ Secret Key (sk_test_...): ________________
+□ Webhook Secret (whsec_...): ________________
 
 PRINT SPACE:
-☐ API Key: ________________
-☐ Merchant ID: ________________
+□ API Key: ________________
+(Merchant ID: optional if not visible in CreativeHub)
 
 PRODIGI:
-☐ API Key: ________________
-☐ Merchant ID: ________________
+□ API Key: ________________
+(Merchant ID: optional if not available)
 
 EMAIL:
-☐ Order Email: info@mimmsphoto.com ✅
+□ Order Email: info@mimmsphoto.com ✅
 
-════════════════════════════════════════════════════════
+═══════════════════════════════════════════════════════════
 ```
 
 ---
@@ -434,6 +444,9 @@ FTP WORKS: YES / NO
 **"Print Space won't let me generate API key"**
 → Check account is verified (check email)
 
+**"I don't see Merchant ID in Print Space/CreativeHub"**
+→ That's normal! Merchant ID is optional. Just use the API Key.
+
 **"Can't connect via FTP"**
 → Verify port number (21 vs 22)
 → Check credentials are correct
@@ -448,6 +461,7 @@ FTP WORKS: YES / NO
 
 **Status:** Ready to use  
 **Date:** January 3, 2026  
+**Updated:** January 3, 2026 (Print Space Merchant ID noted as optional)
 **Purpose:** Credential gathering for Stages 1-7 implementation
 
 ---
